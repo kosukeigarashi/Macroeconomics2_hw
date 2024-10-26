@@ -1,0 +1,67 @@
+\documentclass{ltjsarticle}
+\usepackage[english]{babel}
+\usepackage{luatexja}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{comment}
+\usepackage{bbm}
+\newcolumntype{d}{S[
+    input-open-uncertainty=,
+    input-close-uncertainty=,
+    parse-numbers = false,
+    table-align-text-pre=false,
+    table-align-text-post=false
+ ]}
+
+
+\usepackage{titlesec}
+\titleformat*{\section}{\large\rmfamily}
+
+\usepackage{tcolorbox}
+\usepackage[legacycolonsymbols]{mathtools}
+\usepackage{xcolor}
+
+%python
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codered}{rgb}{0.6,0,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+
+\newcommand{\s}{\sigma}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\e}{\epsilon}
+
+\title{Economotrics $\mathrm{II}$ Assignment 1}
+\author{29--246029 Rin Nitta}
+\begin{document}
+\maketitle
+
+
+
+\section{} %1
+
+\subsection*{(a)}
+An Arrow-Debreu equilibrium (ADE) is given by a price vector $\{p_t\}_{t=0}^\infty$ and allocations $\{c_t^1, c_t^2\}_{t=0}^\infty$ such that
+\begin{enumerate}
+    \item Given prices $\{p_t\}_{t=0}^\infty$, for $i = 1,2$, $\{c_t^i\}_{t=0}^\infty$ solve the consumer's problem
+    \begin{gather*}
+        \max_{\{c_t^i\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t \log c_t^i \quad \text{s.t.} \quad \sum_{t=0}^\infty p_t c_t^i \leq \sum_{t=0}^\infty p_t e_t^i \quad \text{ and } \quad c_t^i \geq 0 \quad ( \forall t).
+    \end{gather*}
+    \item Goods markets clear
+    \begin{gather*}
+        c_t^1 + c_t^2 = e_t^1 + e_t^2 \quad ( \forall t).
+    \end{gather*}
+\end{enumerate}
+
+
+
+\end{document}
