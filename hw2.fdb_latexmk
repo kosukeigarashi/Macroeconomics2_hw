@@ -1,6 +1,6 @@
 # Fdb version 3
-["lualatex"] 1730171440 "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" "hw2.pdf" "hw2" 1730171442
-  "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" 1730171291 1897 f68d8821d7325f8e2af2e74b45340dcb ""
+["lualatex"] 1730172314 "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" "hw2.pdf" "hw2" 1730172318
+  "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" 1730172310 2018 053fd3a0f2d6a6307e4b5a081f28829b ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/haranoajigothic-medium.luc" 1717949811 1776656 92b7c6ca63b71d74268d273e8ea524d8 ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/haranoajimincho-regular.luc" 1717949807 2157817 22da5fc820838f25dfbdbe637ded95fa ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmroman10-regular.luc" 1717949801 123160 fae69f77759c5c9c8b33ffe7ddbbe92a ""
@@ -267,9 +267,9 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/tex/generic/config/language.dat" 1586288234 6642 7d35e16105a3fac4deb3f43c83356626 ""
   "/usr/local/texlive/2020/texmf-var/web2c/luahbtex/lualatex.fmt" 1590241794 2691551 38ce205b6706911c2df930158b3f2867 ""
-  "hw2.aux" 1730171442 137 4a52aa3541d724e578a10970e4ac17b3 "lualatex"
-  "hw2.tex" 1730171291 1897 f68d8821d7325f8e2af2e74b45340dcb ""
+  "hw2.aux" 1730172318 755 7348341ac3f936245388bbd53deceaac "lualatex"
+  "hw2.tex" 1730172310 2018 053fd3a0f2d6a6307e4b5a081f28829b ""
   (generated)
-  "hw2.pdf"
   "hw2.log"
+  "hw2.pdf"
   "hw2.aux"

@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.12.0 (TeX Live 2020)  (format=lualatex 2020.5.23)  29 OCT 2024 12:10
+This is LuaHBTeX, Version 1.12.0 (TeX Live 2020)  (format=lualatex 2020.5.23)  29 OCT 2024 12:25
  restricted system commands enabled.
  file:line:error style messages enabled.
 **/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex
@@ -1002,16 +1002,16 @@ LaTeX Font Info:    Font shape `JT3/mc/m/n' will be
 {/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./hw2.aux))
 
 Here is how much of LuaTeX's memory you used:
- 20729 strings out of 480992
+ 20732 strings out of 480992
  125171,794899 words of node,token memory allocated
- 7805 words of node memory still in use:
-   10 hlist, 2 vlist, 5 rule, 2 glue, 122 kern, 1 glyph, 2987 attribute, 119 glue_spec, 164 attribute_list, 2 write, 13 user_defined nodes
-   avail lists: 1:25,2:13940,3:96,4:145,5:138,6:16,7:1368,8:52,9:324,10:4,11:46
- 37400 multiletter control sequences out of 65536+600000
+ 7940 words of node memory still in use:
+   10 hlist, 2 vlist, 5 rule, 2 glue, 122 kern, 1 glyph, 2987 attribute, 146 glue_spec, 164 attribute_list, 2 write, 13 user_defined nodes
+   avail lists: 1:25,2:17013,3:157,4:201,5:152,6:30,7:1524,8:52,9:394,10:4,11:46
+ 37403 multiletter control sequences out of 65536+600000
  96 fonts using 37796555 bytes
  71i,10n,75p,1053b,382s stack positions out of 5000i,500n,10000p,200000b,100000s
 </usr/local/texlive/2020/texmf-dist/fonts/opentype/public/lm/lmroman10-regular.otf></usr/local/texlive/2020/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/local/texlive/2020/texmf-dist/fonts/opentype/public/lm/lmroman12-regular.otf></usr/local/texlive/2020/texmf-dist/fonts/opentype/public/lm/lmroman17-regular.otf></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on hw2.pdf (1 page, 104808 bytes).
+Output written on hw2.pdf (1 page, 105407 bytes).
 
 PDF statistics: 80 PDF objects out of 1000 (max. 8388607)
  53 compressed objects within 1 object stream
