@@ -20,6 +20,8 @@
 
 \usepackage{titlesec}
 \titleformat*{\section}{\large\rmfamily}
+\titleformat*{\subsection}{\rmfamily}
+\titleformat*{\subsubsection}{\rmfamily}
 
 \usepackage{tcolorbox}
 \usepackage[legacycolonsymbols]{mathtools}
@@ -51,26 +53,106 @@
 
 \section{} %1
 
-\subsection*{(a)}
-An Arrow-Debreu equilibrium (ADE) is given by a price vector $\{p_t\}_{t=0}^\infty$ and allocations $\{c_t^1, c_t^2\}_{t=0}^\infty$ such that
-\begin{enumerate}
-    \item Given prices $\{p_t\}_{t=0}^\infty$, for $i = 1,2$, $\{c_t^i\}_{t=0}^\infty$ solve the consumer's problem
-    \begin{gather*}
-        \max_{\{c_t^i\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t \log c_t^i \quad \text{s.t.} \quad \sum_{t=0}^\infty p_t c_t^i \leq \sum_{t=0}^\infty p_t e_t^i \quad \text{ and } \quad c_t^i \geq 0 \quad ( \forall t).
-    \end{gather*}
-    \item Goods markets clear
-    \begin{gather*}
-        c_t^1 + c_t^2 = e_t^1 + e_t^2 \quad ( \forall t).
-    \end{gather*}
-\end{enumerate}
+
 
 \section{} %2 Nitta
 
-\subsection{(a)}
+\subsection*{(a)}
 
-\subsection{(b)}
+At the optimal consumption, the budget constraint holds with equality:
+\begin{gather*}
+    c_t = A k_t^\alpha - k_{t+1}
+\end{gather*}
+
+Define 
+\begin{gather*}
+    w(k_0) = \max_{\{k_{t+1}\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t \log c_t
+\end{gather*}
+Then, this is equivalent to
+\begin{align*}
+    w(k_0) 
+    &= \max_{\{k_{t+1}\}_{t=0}^\infty ; k_0 \: \text{given}} \sum_{t=0}^\infty \beta^t \log c_t \\
+    &= \max_{k_1; k_0 \: \text{given}} \log c_0 + \beta \left[\max_{\{k_{t+1}\}_{t=1}^\infty ; k_1 \: \text{given}} \sum_{t=1}^\infty \beta^{t-1} \log c_t \right] \\
+    &= \max_{k_1; k_0 \: \text{given}} \log (A k_0^\alpha - k_1) + \beta w(k_1)
+\end{align*}
+with conditions $0 \leq k_1 \leq A k_0^\alpha$ for all $t = 0, \cdots, \infty$. This is the recursive problem of the social planner.
+
+\subsection*{(b)}
+\subsubsection*{(i): Guess and Verify}
+Guess $V(k) = X + Y \log A k^\alpha$ where $X$ and $Y$ are coefficients to be determined.
+Then, the Bellman equation is
+\begin{gather*}
+    V(k) = \max_{0 \leq k' \leq  A k^\alpha; k \: \text{given}} \log (A k^\alpha - k') + \beta (X + Y \log A k'^\alpha)
+\end{gather*}
+The first-order condition is
+\begin{gather*}
+    \frac{\partial V(k)}{\partial k'} = - \frac{1}{A k^\alpha - k'} + \alpha \beta Y \frac{1}{k'} = 0\\
+    \therefore \quad k' = \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha
+\end{gather*}
+
+Evaluating the value function at the optimal $k'$, we have
+\begin{align*}
+    V(k') 
+    &= \log \left( A k^\alpha - \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha \right) + \beta (X + Y \log A \left( \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha \right)^\alpha) \\
+    &= \beta X + \log \left( \frac{1}{1+\alpha \beta Y} \right) + \alpha \beta Y \log \left( \frac{\alpha \beta Y}{1+\alpha \beta Y}\right) + \alpha (1 + \beta Y) \log \left( A k^\alpha \right) 
+\end{align*}
+Solving this, we have
+\begin{align*}
+    X &= \frac{1}{1-\beta} \left[ \log \left( \frac{1}{1+\alpha \beta Y} \right) +  \alpha \beta Y \log \left( \frac{\alpha \beta Y}{1+\alpha \beta Y}\right)  \right] \\
+    Y &= \frac{1}{\alpha (1-\beta)} 
+\end{align*}
+
+\subsubsection*{(ii): Value Function Iteration}
+
+
+\subsubsection*{(iii): Policy Function Iteration}
+Using the result in (i), we have the true policy function:
+\begin{gather*}
+    k' = \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha = \frac{\alpha \beta}{1-\beta + \alpha \beta} A k^\alpha
+\end{gather*}
+Using this policy function, we can caluculate the value function.
+\begin{align*}
+    V_{h_j}(k_0) 
+    &= \sum_{t=0}^{\infty} \beta^t \log \left(A k_t^\alpha - \frac{\alpha \beta}{1-\beta + \alpha \beta} A k^\alpha \right) \\
+    &= \frac{1}{1-\beta} \log \left( \frac{1-\beta}{1-\beta + \alpha \beta} A \right) + \sum_{t=0}^{\infty} \beta^t \log k_t^\alpha
+\end{align*}
+Since the second term is caluculated as
+\begin{align*}
+    \sum_{t=0}^{\infty} \beta^t \log k_t^\alpha
+    &= \sum_{t=o}^{\infty} \beta^t \alpha^{t+1} \log k_0 + \sum_{t=o}^{\infty} \beta^t (\alpha + \cdots + \alpha^t) \log \left(\frac{\alpha \beta}{1 - \beta + \alpha \beta} A \right) \\
+    &= \frac{\alpha}{1 - \alpha \beta} \log k_0 + \frac{\alpha \beta}{(1-\beta)(1-\alpha \beta)} \log \left(\frac{\alpha \beta}{1 - \beta + \alpha \beta} A \right) 
+\end{align*}
 
 \section{} %3 Nitta
+
+\subsection*{(a)}
+The agent's life-time budget constraint is
+\begin{gather*}
+    \sum_{t=0}^\infty p_t \left(c_t + \frac{b_{t+1}}{1+r_{t+1}} - b_t - e \right)
+\end{gather*}
+
+\subsection*{(b)}
+Define the Lagrangian as
+\begin{gather*}
+    \mathcal{L} = \sum_{t=0}^\infty \beta^t \left[ \log c_t + \lambda_t \left( p_t \left(c_t + \frac{b_{t+1}}{1+r_{t+1}} - b_t - e \right) \right) \right] 
+\end{gather*}
+The first-order conditions are
+\begin{align*}
+    \frac{\partial \mathcal{L}}{\partial c_t} &= U'(c_t) - \lambda_t p_t = 0 \\
+    \frac{\partial \mathcal{L}}{\partial b_t+1} &= - \beta^t \frac{\lambda_t p_t}{1+r_{t+1}} + \beta^{t+1} \lambda_{t+1} p_{t+1} = 0
+\end{align*}
+Thus, the Euler equation is
+\begin{gather*}
+    U'(c_t) = \beta U'(c_{t+1})(1+r_{t+1})
+\end{gather*}
+The transversality condition is
+\begin{gather*}
+    \lim_{t \to \infty} \beta^t (1+r_{t+1}) U'(c_t) b_t = 0
+\end{gather*}
+with $c_t = b_t - \frac{b_{t+1}}{1 + r_{t+1}} + e$.
+
+\subsection*{(c)}
+
 
 \section{} %4
 

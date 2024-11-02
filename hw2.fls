@@ -373,8 +373,6 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam1
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
-INPUT /Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/haranoajigothic-medium.luc
-INPUT /Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmsans12-regular.luc
 INPUT /Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmroman7-regular.luc
 INPUT /Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmroman5-regular.luc
 OUTPUT hw2.pdf
@@ -391,3 +389,4 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb
