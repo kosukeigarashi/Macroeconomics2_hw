@@ -1,6 +1,6 @@
 # Fdb version 3
-["lualatex"] 1730566054 "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" "hw2.pdf" "hw2" 1730566056
-  "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" 1730566051 5622 bbb61a85a3e33efcab207db97807f326 ""
+["lualatex"] 1730706955 "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" "hw2.pdf" "hw2" 1730706958
+  "/Users/nittarin/Downloads/VSCode/Macroeconomics/Macroeconomics2_hw/hw2.tex" 1730706952 8942 008cf11dc7218710dcc2ab373363d2d1 ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/haranoajimincho-regular.luc" 1717949807 2157817 22da5fc820838f25dfbdbe637ded95fa ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmroman10-regular.luc" 1717949801 123160 fae69f77759c5c9c8b33ffe7ddbbe92a ""
   "/Users/nittarin/Library/texlive/2020/texmf-var/luatex-cache/generic-dev/fonts/otl/lmroman12-regular.luc" 1717949808 123499 e08a20c30733e27e40d80ff26a1ae696 ""
@@ -62,6 +62,7 @@
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1248133631 31764 459c573c03a4949a528c2cc7f557e217 ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/local/texlive/2020/texmf-dist/scripts/pdftexcmds/pdftexcmds.lua" 1574631863 9440 81f3089b6240ff8a2875ac984d9cd305 ""
   "/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2020/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
@@ -180,6 +181,7 @@
   "/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty" 1546728038 989 2cf3da8e8ec55131c49389428d565e37 ""
   "/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty" 1393459310 443 0b2e781830192df35c0fd357cf13e26e ""
   "/usr/local/texlive/2020/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty" 1203877327 325 2bcd023400636339210573e2b3ee298b ""
+  "/usr/local/texlive/2020/texmf-dist/tex/latex/physics/physics.sty" 1356048875 29610 a9597219b282d9c78b02393dcd7d4322 ""
   "/usr/local/texlive/2020/texmf-dist/tex/latex/siunitx/siunitx-abbreviations.cfg" 1579124948 4745 793d4d5a808c37a7085f620706b56fe1 ""
   "/usr/local/texlive/2020/texmf-dist/tex/latex/siunitx/siunitx.sty" 1582668387 273434 c3d90844d64bf82fded1b064359b4e14 ""
   "/usr/local/texlive/2020/texmf-dist/tex/latex/sttools/stfloats.sty" 1491281624 24057 a5144c910597201d42c92bacb893a380 ""
@@ -266,8 +268,8 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/tex/generic/config/language.dat" 1586288234 6642 7d35e16105a3fac4deb3f43c83356626 ""
   "/usr/local/texlive/2020/texmf-var/web2c/luahbtex/lualatex.fmt" 1590241794 2691551 38ce205b6706911c2df930158b3f2867 ""
-  "hw2.aux" 1730566056 567 d2e869f336bacd536fe2599b5ae230dd "lualatex"
-  "hw2.tex" 1730566051 5622 bbb61a85a3e33efcab207db97807f326 ""
+  "hw2.aux" 1730706958 567 ec130eb7242f1bc5c2b5fe9b37fd0615 "lualatex"
+  "hw2.tex" 1730706952 8942 008cf11dc7218710dcc2ab373363d2d1 ""
   (generated)
   "hw2.log"
   "hw2.pdf"

@@ -3,6 +3,7 @@
 \usepackage{luatexja}
 \usepackage{amsmath,amssymb}
 \usepackage{amsthm}
+\usepackage{physics} 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[dvipdfmx]{color}
 \usepackage{booktabs}
@@ -155,9 +156,102 @@ with $c_t = b_t - \frac{b_{t+1}}{1 + r_{t+1}} + e$.
 
 
 \section{} %4
+\subsection*{(a)}
+\begin{align*}
+    v(k,K)= \max_{c,k\geq 0} U(c) + v(k', K')\\
+    s.t.\ c+k' &= w(K) + (1+r(K)-\delta -\tau)k + T\\
+    K' &= H(K)
+\end{align*}
+
+\subsection*{(b)}
+RCE is a value function $v:\mathbb{R}^2_{+}\rightarrow \mathbb{R}$ and policy function $C,G:\ \mathbb{R}^2_{+}\rightarrow \mathbb{R}_{+}$ for the representative household, pricing function $w,r:\ \mathbb{R}\rightarrow \mathbb{R}_{+}$ and an aggregate law of motion $H:\ \mathbb{R}_{+}\rightarrow \mathbb{R}_{+}$ such that
+\begin{itemize}
+    \item[1] Given $w,r,H$, $v$ solves the Bellman equation and $C,G$ are the associated policy function.
+    \item[2] Pricing function satisfies firm's FOC.
+    \item[3] Consistency for all $K\in \mathbb{R}_{+}$: $H(K) = G(K,K)$
+    \item[4] Market clearing: for all $K\in \mathbb{R}_{+}$
+    $$C(K,K)+G(K,K) = F(K,1) + (1-\delta)K$$.
+\end{itemize}
+
+\subsection*{(c)}
+From market clear,
+\begin{gather*}
+    k_t^d = k_t^s\\
+    c_t+k_{t+1}=f(k_t).
+\end{gather*}
+
+Thus law of motion for aggregate capital stock is 
+\begin{align*}
+    K' = H(K)=f(K)-C(K,K).
+\end{align*}
+
+\subsection*{(d)}
+In the steady state, $K_{t+1}=K_t = K^{*}$. Thus $I=\delta K^{*}$
+From market clear
+\begin{align*}
+    I=\delta K^{*} &= F(K^{*},1) - C(K^{*},K^{*})\\
+    K^{*} &=\frac{1}{\delta} \qty{F(K^{*},1) - C(K^{*},K^{*})}
+\end{align*}
+
+
+\subsection*{(e)}
+Law of motion for aggregate variables coincide with CE allocation for representative household and firm.
+
+In CE, Firm solves
+\begin{align*}
+    \max_{\{c_t, k_{t+1}\}^{\infty}_{t=0}} \sum^{\infty}_{t=0} p_t\qty(F(K^d_t,1)-w_t -r_tk_t^d)
+\end{align*}
+
+From FOC and assumption of F($\cdot$),
+\begin{align*}
+    F_K(k_t^d,1)&=r_t\\
+    F_N(k_t^d,1)&=w_t\\
+    \max_{\{c_t, k_{t+1}\}^{\infty}_{t=0}} \sum^{\infty}_{t=0} p_t\qty(F(K^d_t,1)-w_t -r_tk_t^d)&=0.
+\end{align*}
+
+Representative household solves
+\begin{align*}
+    \max_{\qty{c_t,k_{t+1}}^{\infty}_{t=0}} \sum^{\infty}_{t=0} U(c_t)\\
+    s.t.\\
+    \sum^{\infty}_{t=0} P_t\qty(c_t + i_t) \leq \sum^{\infty}_{t=0} P_t \qty(w_t+k_t r_t).
+    c_t, k_{t+1} \geq 0
+    c_t + i_t = k_{t+1} + (1-\delta)k_t
+\end{align*}
+
+Note that we do not have to consider the tax because government pay back all taxes.
+
+Define Lagrangian as 
+$$\mathcal{L}=\sum^{\infty}_{t=0} U(c_t) + \mu\qty[ \sum^{\infty}_{t=0} P_t \qty(w_t+k_t r_t) - \sum^{\infty}_{t=0} P_t\qty(c_t + i_t)].$$
+
+From FOCs
+\begin{align*}
+    \beta^t U'(c_t)=\mu P_t\\
+    P_{t+1}r_{t+1} -P_t + (1-\delta)P_{t+1}=0.
+\end{align*}
+Combining, we have Euler equation
+\begin{align*}
+    U'(c_t)=\beta U'(c_{t+1})(1+r_{t+1}-\delta).
+\end{align*}
+
+From $F(K,N)=AK^\alpha L^{1-\alpha}$, and firm's FOC $F_K(K,1)=r_t$
+
+\begin{align*}
+    U'(C(K^{*},K^{*}))&=\beta U'(C(K^{*},K^{*}))(1+F_K^{*}(K^{*},1)-\delta)\\
+    1&=\beta (1+A\alpha (K^{*})^{\alpha-1}-\delta)\\
+    K^{*}&=\qty{\frac{1-\beta(1-\delta)}{\alpha A}}^{\frac{1}{\alpha-1}}
+\end{align*}
 
 \section{} %5
 
 \section{} %6
+For any $\{k_{t+1} \}^{\infty}_{t=0}$, denote log difference as $\dot{x}_{t+1}= \log(x_{t+1})-\log(x_{t})$.\\
+Under BGP, for all $t$,  $\dot{y}_t = \dot{k}_t = 3$
+\begin{align*}
+    \dot{y}_t &= \alpha \dot{k}_t + (1-\alpha)(\dot{z}_t + \dot{l}_t)\\
+    3&= 0.4*0.3 + (1-0.4)(\dot{z}_t + \dot{l}_t)\\
+    \dot{z}_t &= 2.
+\end{align*}
+
+Thus growth rate of TFP along the balanced growth path is $2\%$.
 
 \end{document}

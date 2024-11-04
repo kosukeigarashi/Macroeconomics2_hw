@@ -161,6 +161,10 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/amscls/amsthm.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/amscls/amsthm.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/physics/physics.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/physics/physics.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphicx.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphicx.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/graphics/graphics.sty
@@ -179,8 +183,6 @@ INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/siunitx/siunitx.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/siunitx/siunitx.sty
-INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/tools/array.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/tools/array.sty
 INPUT /usr/local/texlive/2020/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
@@ -390,3 +392,4 @@ INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb
+INPUT /usr/local/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb
