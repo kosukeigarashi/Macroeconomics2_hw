@@ -54,6 +54,37 @@
 
 
 \section{} %1
+\subsection*{(a)}
+Social planner's problem can be written as below.
+\begin{align*}
+    &w(k_0) = \max_{\{c_t, k_{t+1}\}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t \log c_t \\
+    &\text{s.t.} F(k_t) \= k_t^\alpha\\
+    &c_t \geq 0, k_{t+1} \geq 0\\
+    &k_0 = 0 given
+\end{align*}
+Define 
+\begin{align*}
+    f(k) \equiv F(k) + (1-\delta)k = k^\alpha + (1-\delta)k
+\end{align*}
+$f$ gives total output and un-depreciated capital that remains.\\
+The resource constraint is $c_t + k_{t+1} = k_t^\alpha + (1 - \delta)k_t$.\\
+From $c_t \geq 0$ and $k_{t+1} \geq 0$, $0 \leq k_{t+1} \leq k_t^\alpha + (1 - \delta)k_t$ holds.\\
+Then, $c_t = k_t^\alpha + (1 - \delta)k_t - k_{t+1}$.\\
+Now, the social planner's problem is
+\begin{align*}
+    w(k_0) \= max_{\{k_{t+1}\}_{t=0}^\infty ,k_0 given} \sum_{t=0}^\infty \beta^t \log (k_t^\alpha + (1 - \delta)k_t - k_{t+1})\\
+    \= max_{k_1} \{ \log (k_0^\alpha + (1 - \delta)k_0 - k_1) + \beta [\max_{\{k_{t+1}\}_{t = 1}^\infty ,k_1 given] \sum_{t=1}^\infty \log(k_t^\alpha + (1 - \delta)k_t - k_{t+1})\}\\
+    \text{with} 0\leq k_{t+1} \leq k_t^\alpha + (1 - \delta)k_t \text{ for all } t
+\end{align*}
+From this,
+\begin{align*}
+    w(k_0) = \max_{0 \leq k_1 \leq k_0^\alpha + (1 - \delta)k_0 , k_0 given} \{ \log (k_0^\alpha + (1 - \delta)k_0 - k_1) + \beta w(k_1)\}
+\end{align*}
+We introduce value function $v(.)$ for the recursive problem.\\
+Therefore, the recursive problem is
+\begin{align*}
+    v(k) = \max_{0 \leq k' \leq k^\alpha + (1 - \delta)k} \{ \log (k^\alpha + (1 - \delta)k - k') + \beta v(k')\}
+\end{align*}
 
 \subsection*{(b)}
 The value function and the policy function are shown in the following figures.
