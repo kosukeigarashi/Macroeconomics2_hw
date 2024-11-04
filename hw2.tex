@@ -9,6 +9,7 @@
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage{comment}
+\usepackage{here}
 \usepackage{bbm}
 \newcolumntype{d}{S[
     input-open-uncertainty=,
@@ -54,6 +55,293 @@
 
 \section{} %1
 
+\subsection*{(b)}
+The value function and the policy function are shown in the following figures.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q1B_VF.png}
+        \caption{Value Function}
+        \label{fig:value_function}
+    \end{minipage}
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q1B_PF.png}
+        \caption{Policy Function}
+        \label{fig:policy_function}
+    \end{minipage}
+    \label{fig:value_and_policy_functions}
+\end{figure}
+
+The Python code is as follows:
+\begin{lstlisting}[language=python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    morekeywords={as},
+    classoffset=0,
+    keywordstyle=\color{codepurple},
+    deletekeywords={list,in,float},
+    classoffset=1,
+    morekeywords={list},
+    keywordstyle=\color{blue!60!green},
+    classoffset=2,
+    morekeywords={in},
+    keywordstyle=\color{blue},
+    classoffset=3,
+    morekeywords={float},
+    keywordstyle=\color{blue!40!green},
+    numberstyle=\tiny\color{black},
+    stringstyle=\color{codered},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    emph={len,range,print},
+    emphstyle=\color{yellow!40!black}
+    ]
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Model():
+    def __init__(self,
+        beta = 0.6,
+        gamma = 1.0,
+        alpha = 0.3,
+        delta = 1.0,
+        nk = 10,   
+        kmax = 0.2,  
+        kmin = 0.04, 
+        maxit = 1000,
+        tol = 1e-4,  
+        ): 
+        
+        self.beta, self.gamma, self.alpha = beta, gamma, alpha 
+        self.delta, self.nk = delta, nk 
+        self.kmax, self.kmin = kmax, kmin 
+        self.maxit, self.tol = maxit, tol
+        self.kgrid = np.linspace(kmin,kmax,nk) 
+
+
+it = 1
+dif1 = 1.0 
+dif2 = 1.0 
+
+m = Model()
+vfcn = np.ones(m.nk)
+pfcn = np.ones_like(vfcn)
+Tvfcn = np.zeros_like(vfcn)
+Tpfcn = np.zeros_like(vfcn)
+vkp = np.empty((m.nk,m.nk))
+v_conv = [] 
+p_conv = [] 
+util = np.ones((m.nk, m.nk))
+
+def utility(c):
+    if c > 0:
+        return np.log(c)
+    else:
+        return -1e10 
+
+for i in range(m.nk): 
+    for j in range(m.nk): 
+        wealth = m.kgrid[i] ** m.alpha + (1.0 - m.delta) * m.kgrid[i]
+        cons = wealth - m.kgrid[j]
+        util[i, j] = utility(cons) 
+
+while (it<m.maxit) & (dif1>m.tol):
+
+    for i in range(m.nk):
+        
+        vkp[i,:] = util[i,:] + m.beta*vfcn
+        
+        ploc = np.argmax(vkp[i,:])
+        Tvfcn[i] = vkp[i,ploc]
+        Tpfcn[i] = m.kgrid[ploc]
+    
+    dif1 = np.max(np.abs((Tvfcn-vfcn)/vfcn))
+    dif2 = np.max(np.abs((Tpfcn-pfcn)/pfcn)) 
+    
+    vfcn = np.copy(Tvfcn)
+    pfcn = np.copy(Tpfcn)
+
+    print(f"iteration index: {it}, iteration diff of value: {dif1:.7f}")
+
+    v_conv.append(dif1)
+    p_conv.append(dif2)
+
+    it += 1
+
+print("-+- PARAMETER VALUES -+-")
+print(f"beta={m.beta}, gamma={m.gamma}, alpha={m.alpha}, delta={m.delta}")
+print(f"kmin={m.kmin}, kmax={m.kmax}, grid={m.nk}")
+
+AA = (1-m.beta)**(-1) * (np.log(1-m.alpha*m.beta) + ((m.alpha*m.beta)/(1-m.alpha*m.beta))*np.log(m.alpha*m.beta))
+BB = m.alpha/(1-m.alpha*m.beta)
+v_true = AA + BB*np.log(m.kgrid)
+p_true = m.beta * m.alpha * (m.kgrid ** m.alpha)
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid,vfcn,label="approximation")
+ax.plot(m.kgrid,v_true,label="analytical")
+ax.set(title="",xlabel=r"Capital Stock k", ylabel=r"Value Function",xlim=(0,m.kmax))
+ax.legend(loc="lower right")
+ax.grid()
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid, pfcn, label="approximation")
+ax.plot(m.kgrid, p_true, label="analytical")
+ax.plot(m.kgrid, m.kgrid, ls="--", label="45-degree line")
+ax.set(title="",xlabel=r"Capital Stock k", ylabel=r"Policy function",xlim=(0,m.kmax))
+ax.legend(loc="upper left")
+ax.grid()
+plt.show()
+\end{lstlisting}
+
+
+
+\subsection*{(c)}
+
+The value function and the policy function are shown in the following figures.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q1C_VF.png}
+        \caption{Value Function}
+        \label{fig:value_function}
+    \end{minipage}
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q1C_PF.png}
+        \caption{Policy Function}
+        \label{fig:policy_function}
+    \end{minipage}
+    \label{fig:value_and_policy_functions}
+\end{figure}
+
+The Python code is as follows:
+\begin{lstlisting}[language=python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    morekeywords={as},
+    classoffset=0,
+    keywordstyle=\color{codepurple},
+    deletekeywords={list,in,float},
+    classoffset=1,
+    morekeywords={list},
+    keywordstyle=\color{blue!60!green},
+    classoffset=2,
+    morekeywords={in},
+    keywordstyle=\color{blue},
+    classoffset=3,
+    morekeywords={float},
+    keywordstyle=\color{blue!40!green},
+    numberstyle=\tiny\color{black},
+    stringstyle=\color{codered},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    emph={len,range,print},
+    emphstyle=\color{yellow!40!black}
+    ]
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Model():
+    def __init__(self,
+        beta = 0.6,  
+        gamma = 1.0,
+        alpha = 0.3,  
+        delta = 1.0,  
+        nk = 20,   
+        kmax = 0.2, 
+        kmin = 0.04, 
+        maxit = 1000,
+        tol = 1e-4,  
+        ): 
+        
+        self.beta, self.gamma, self.alpha = beta, gamma, alpha 
+        self.delta, self.nk = delta, nk 
+        self.kmax, self.kmin = kmax, kmin 
+        self.maxit, self.tol = maxit, tol
+        self.kgrid = np.linspace(kmin,kmax,nk) 
+
+it = 1 
+dif1 = 1.0 #価値関数の繰り返し誤差
+dif2 = 1.0 #政策関数の繰り返し誤差
+
+m = Model()
+vfcn = np.ones(m.nk)
+pfcn = np.ones_like(vfcn)
+Tvfcn = np.zeros_like(vfcn)
+Tpfcn = np.zeros_like(vfcn)
+vkp = np.empty((m.nk,m.nk))
+v_conv = [] 
+p_conv = [] 
+
+util = np.ones((m.nk, m.nk))
+
+def utility(c):
+    if c > 0:
+        return np.log(c)
+    else:
+        return -1e10 
+
+for i in range(m.nk):
+    for j in range(m.nk): 
+        wealth = m.kgrid[i] ** m.alpha + (1.0 - m.delta) * m.kgrid[i]
+        cons = wealth - m.kgrid[j]
+        util[i, j] = utility(cons) 
+
+while (it<m.maxit) & (dif1>m.tol):
+
+    for i in range(m.nk):
+        
+        vkp[i,:] = util[i,:] + m.beta*vfcn
+        
+        ploc = np.argmax(vkp[i,:])
+        Tvfcn[i] = vkp[i,ploc]
+        Tpfcn[i] = m.kgrid[ploc]
+    
+    dif1 = np.max(np.abs((Tvfcn-vfcn)/vfcn))
+    dif2 = np.max(np.abs((Tpfcn-pfcn)/pfcn)) 
+    
+    vfcn = np.copy(Tvfcn)
+    pfcn = np.copy(Tpfcn)
+
+    print(f"iteration index: {it}, iteration diff of value: {dif1:.7f}")
+
+    v_conv.append(dif1)
+    p_conv.append(dif2)
+
+    it += 1
+
+print("-+- PARAMETER VALUES -+-")
+print(f"beta={m.beta}, gamma={m.gamma}, alpha={m.alpha}, delta={m.delta}")
+print(f"kmin={m.kmin}, kmax={m.kmax}, grid={m.nk}")
+
+AA = (1-m.beta)**(-1) * (np.log(1-m.alpha*m.beta) + ((m.alpha*m.beta)/(1-m.alpha*m.beta))*np.log(m.alpha*m.beta))
+BB = m.alpha/(1-m.alpha*m.beta)
+v_true = AA + BB*np.log(m.kgrid)
+p_true = m.beta * m.alpha * (m.kgrid ** m.alpha)
+
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid,vfcn,label="approximation")
+ax.plot(m.kgrid,v_true,label="analytical")
+ax.set(title="",xlabel=r"Capital Stock k", ylabel=r"Value Function",xlim=(0,m.kmax))
+ax.legend(loc="lower right")
+ax.grid()
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid, pfcn, label="approximation")
+ax.plot(m.kgrid, p_true, label="analytical")
+ax.plot(m.kgrid, m.kgrid, ls="--", label="45-degree line")
+ax.set(title="",xlabel=r"Capital Stock k", ylabel=r"Policy function",xlim=(0,m.kmax))
+ax.legend(loc="upper left")
+ax.grid()
+plt.show()
+\end{lstlisting}
 
 
 \section{} %2 Nitta
@@ -112,7 +400,7 @@ We set the value of parameters as follows:
 \end{gather*}
 
 The value function and the policy function are shown in the following figures. We used the result of Guess and Verify as the true value function and policy function.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{\textwidth}
         \centering
@@ -129,7 +417,7 @@ The value function and the policy function are shown in the following figures. W
     \label{fig:value_and_policy_functions}
 \end{figure}
 
-The Pythin code is as follows:
+The Python code is as follows:
 \begin{lstlisting}[language=python,
     backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
@@ -426,6 +714,51 @@ From $F(K,N)=AK^\alpha L^{1-\alpha}$, and firm's FOC $F_K(K,1)=r_t$
 \end{align*}
 
 \section{} %5
+The aggregate resource constraint is
+\begin{gather*}
+    (1+n)^t c_t + K_{t+1} = F(K_t, (1+n)^t (1+g)^t) + (1-\delta)K_t
+\end{gather*}
+Define growth-adjusted per-capita variables as
+\begin{align*}
+    \tilde{c}_t &= \frac{c_t}{(1+n)^t} \\
+    \tilde{k}_t &= \frac{k_t}{(1+n)^t} = \frac{k_t}{(1+n)^t(1+g)^t} \\
+\end{align*}
+Divide the aggregate resource constraint by $L_t$, we have
+\begin{gather*}
+    \tilde{c}_t + (1+n)(1+g) \tilde{k}_{t+1} = f(\tilde{k}_t),\\
+    \text{where} \quad f(\tilde{k}_t) = F(\tilde{k}_t, 1) + (1-\delta)\tilde{k}_t.
+\end{gather*}
+Rewrite the objective function as
+\begin{gather*}
+    \sum_{t=0}^\infty \beta^t \frac{c_{t}^{1-\sigma}}{1-\sigma} 
+    = \sum_{t=0}^\infty \tilde{\beta}^t \frac{\tilde{c}_{t}^{1-\sigma}}{1-\sigma},\\
+    \text{where} \quad \tilde{\beta} = \beta (1+n)^{1-\sigma} < 1.
+\end{gather*}
+Then, the social planner's problem becomes
+\begin{gather*}
+    \max_{\{\tilde{c}_t, \tilde{k}_{t+1}\}^{\infty}_{t=0}} \sum_{t=0}^\infty \tilde{\beta}^t \frac{\tilde{c}_{t}^{1-\sigma}}{1-\sigma} \\
+    \text{s.t.} \quad \tilde{c}_t + (1+n)(1+g) \tilde{k}_{t+1} = f(\tilde{k}_t).
+\end{gather*}
+
+The Lagrangian is
+\begin{gather*}
+    \mathcal{L} = \sum_{t=0}^\infty \tilde{\beta}^t \left[ \frac{\tilde{c}_{t}^{1-\sigma}}{1-\sigma} + \sum_{t=0}^\infty \lambda_t  f(\tilde{k}_t) - \tilde{c}_t - (1+n)(1+g) \tilde{k}_{t+1} \right].
+\end{gather*}
+The first-order conditions are
+\begin{align*}
+    \frac{\partial \mathcal{L}}{\partial \tilde{c}_t} &= \tilde{\beta}^t ( \tilde{c}_{t}^{-\sigma} - \lambda_t) = 0, \\
+    \frac{\partial \mathcal{L}}{\partial \tilde{k}_{t+1}} &= - \tilde{\beta}^t \lambda_t (1+n)(1+g) +  \tilde{\beta}^{t+1} \lambda_{t+1} \frac{\partial f(\tilde{k}_{t+1})}{\partial \tilde{k}_{t+1}}\\
+    &= - \tilde{\beta}^t \lambda_t (1+n)(1+g) +  \tilde{\beta}^{t+1} \lambda_{t+1}[F'(\tilde{k}_{t+1},1)+1-\delta]\\
+    &= 0
+\end{align*}
+From these equations, we can derive the Euler equation as follows:
+\begin{gather*}
+    \tilde{c}_t^{-\sigma} = \frac{\tilde{\beta}}{(1+n)(1+g)} [F'(\tilde{k}_{t+1},1)+1-\delta] \tilde{c}_{t+1}^{-\sigma} \\
+\end{gather*}
+
+
+
+
 
 \section{} %6
 For any $\{k_{t+1} \}^{\infty}_{t=0}$, denote log difference as $\dot{x}_{t+1}= \log(x_{t+1})-\log(x_{t})$.\\
@@ -437,5 +770,4 @@ Under BGP, for all $t$,  $\dot{y}_t = \dot{k}_t = 3$
 \end{align*}
 
 Thus growth rate of TFP along the balanced growth path is $2\%$.
-
 \end{document}
