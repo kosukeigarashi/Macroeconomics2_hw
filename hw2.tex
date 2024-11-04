@@ -91,38 +91,199 @@ The first-order condition is
     \therefore \quad k' = \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha
 \end{gather*}
 
-Evaluating the value function at the optimal $k'$, we have
+Evaluating the objecting function (RHS) at the optimal $k'$, we have
 \begin{align*}
-    V(k') 
+    (RHS)
     &= \log \left( A k^\alpha - \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha \right) + \beta (X + Y \log A \left( \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha \right)^\alpha) \\
-    &= \beta X + \log \left( \frac{1}{1+\alpha \beta Y} \right) + \alpha \beta Y \log \left( \frac{\alpha \beta Y}{1+\alpha \beta Y}\right) + \alpha (1 + \beta Y) \log \left( A k^\alpha \right) 
+    &= \beta X + \log \left( \frac{1}{1+\alpha\beta Y}\right) + \alpha\beta Y \log \left( \frac{\alpha \beta Y}{1+\alpha \beta Y}\right) + \beta Y \log A + (1+\alpha\beta Y) \log(A k^\alpha)
 \end{align*}
 Solving this, we have
 \begin{align*}
-    X &= \frac{1}{1-\beta} \left[ \log \left( \frac{1}{1+\alpha \beta Y} \right) +  \alpha \beta Y \log \left( \frac{\alpha \beta Y}{1+\alpha \beta Y}\right)  \right] \\
-    Y &= \frac{1}{\alpha (1-\beta)} 
+    X &= \frac{1}{1-\beta} \left[ \log \left( 1-\alpha\beta \right) +  \frac{\alpha \beta}{1 - \alpha \beta} \log \left( \alpha \beta \right)  \right] \\
+    Y &= \frac{1}{1-\alpha\beta} 
 \end{align*}
+Thus, the value function is represented as the form of $V(k) = C + \frac{1}{1-\alpha\beta}\log A k^\alpha$. 
 
 \subsubsection*{(ii): Value Function Iteration}
+
+We set the value of parameters as follows:
+\begin{gather*}
+    \beta = 0.6, \quad \alpha = 0.3, \quad \delta = 1.0, \quad A = 1.0, \\ nk = 100, \quad k_{\max} = 0.2, \quad k_{\min} = 0.04, \quad \text{maxit} = 10000, \quad \text{tol} = 1e-5
+\end{gather*}
+
+The value function and the policy function are shown in the following figures. We used the result of Guess and Verify as the true value function and policy function.
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q2_VF.png}
+        \caption{Value Function}
+        \label{fig:value_function}
+    \end{minipage}
+    \begin{minipage}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.3\textwidth]{Q2_PF.png}
+        \caption{Policy Function}
+        \label{fig:policy_function}
+    \end{minipage}
+    \label{fig:value_and_policy_functions}
+\end{figure}
+
+The Pythin code is as follows:
+\begin{lstlisting}[language=python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    morekeywords={as},
+    classoffset=0,
+    keywordstyle=\color{codepurple},
+    deletekeywords={list,in,float},
+    classoffset=1,
+    morekeywords={list},
+    keywordstyle=\color{blue!60!green},
+    classoffset=2,
+    morekeywords={in},
+    keywordstyle=\color{blue},
+    classoffset=3,
+    morekeywords={float},
+    keywordstyle=\color{blue!40!green},
+    numberstyle=\tiny\color{black},
+    stringstyle=\color{codered},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    emph={len,range,print},
+    emphstyle=\color{yellow!40!black}
+    ]
+class Model():
+    def __init__(self,
+        beta = 0.6,
+        alpha = 0.3,  
+        delta = 1.0, 
+        A = 1.0,     
+        nk = 100,   
+        kmax = 0.2,  
+        kmin = 0.04, 
+        maxit = 10000, 
+        tol = 1e-5,
+        ): 
+        
+        self.beta, self.alpha = beta, alpha 
+        self.delta, self.nk = delta, nk 
+        self.A = A
+        self.kmax, self.kmin = kmax, kmin 
+        self.maxit, self.tol = maxit, tol
+        self.kgrid = np.linspace(kmin,kmax,nk)
+
+
+it = 1 
+dif1 = 1.0 
+dif2 = 1.0 
+
+m = Model()
+vfcn = np.ones(m.nk)
+pfcn = np.ones_like(vfcn)
+Tvfcn = np.zeros_like(vfcn)
+Tpfcn = np.zeros_like(vfcn)
+vkp = np.empty((m.nk,m.nk))
+v_conv = [] 
+p_conv = [] 
+util = np.ones((m.nk,m.nk))
+
+for i in range(m.nk): #k
+    for j in range(m.nk): #k'
+        
+        wealth = m.A * m.kgrid[i] ** m.alpha + (1.0-m.delta)*m.kgrid[i] #A k^\alpha
+        cons = wealth - m.kgrid[j] # A k^\alpha - k'
+        util[i,j] = np.log(cons) # log(A k^\alpha - k')
+
+while (it<m.maxit) & (dif1>m.tol):
+
+    for i in range(m.nk):
+        
+        vkp[i,:] = util[i,:] + m.beta*vfcn
+        
+        ploc = np.argmax(vkp[i,:])
+        Tvfcn[i] = vkp[i,ploc]
+        Tpfcn[i] = m.kgrid[ploc]
+    
+    dif1 = np.max(np.abs((Tvfcn-vfcn)/vfcn))
+    dif2 = np.max(np.abs((Tpfcn-pfcn)/pfcn)) 
+    
+    vfcn = np.copy(Tvfcn)
+    pfcn = np.copy(Tpfcn)
+
+    print(f"iteration index: {it}, iteration diff of value: {dif1:.7f}")
+
+    v_conv.append(dif1)
+    p_conv.append(dif2)
+
+    it += 1
+
+print("-+- PARAMETER VALUES -+-")
+print(f"beta={m.beta} alpha={m.alpha}, delta={m.delta}")
+print(f"kmin={m.kmin}, kmax={m.kmax}, grid={m.nk}")
+
+# True value function
+AA = (1-m.beta)**(-1) * (np.log(1-m.alpha*m.beta) + ((m.alpha*m.beta)/(1-m.alpha*m.beta))*np.log(m.alpha*m.beta))
+BB = m.alpha/(1-m.alpha*m.beta)
+v_true = AA + BB*np.log(m.kgrid)
+p_true = m.beta * m.alpha * (m.kgrid ** m.alpha)
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid,vfcn,label="numerical solution")
+ax.plot(m.kgrid,v_true,label="analytical solution")
+ax.set(title="(a):Value Function",xlabel=r"Capital: $k$", ylabel=r"VF:$V(k)$",xlim=(0,m.kmax))
+ax.legend(loc="lower right")
+ax.grid()
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(m.kgrid, pfcn, label="numerical solution")
+ax.plot(m.kgrid, p_true, label="analytical solution")
+ax.plot(m.kgrid, m.kgrid, ls="--", label="45-degree line")
+ax.set(title="(b):Policy Function",xlabel=r"Capital: $k$", ylabel=r"Capital at t+1: $k'$",xlim=(0,m.kmax))
+ax.legend(loc="upper left")
+ax.grid()
+plt.show()
+\end{lstlisting}
 
 
 \subsubsection*{(iii): Policy Function Iteration}
 Using the result in (i), we have the true policy function:
 \begin{gather*}
-    k' = \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha = \frac{\alpha \beta}{1-\beta + \alpha \beta} A k^\alpha
+    k' = \frac{\alpha \beta Y}{1 + \alpha \beta Y} A k^\alpha = \alpha \beta A k^\alpha
 \end{gather*}
 Using this policy function, we can caluculate the value function.
 \begin{align*}
     V_{h_j}(k_0) 
-    &= \sum_{t=0}^{\infty} \beta^t \log \left(A k_t^\alpha - \frac{\alpha \beta}{1-\beta + \alpha \beta} A k^\alpha \right) \\
-    &= \frac{1}{1-\beta} \log \left( \frac{1-\beta}{1-\beta + \alpha \beta} A \right) + \sum_{t=0}^{\infty} \beta^t \log k_t^\alpha
+    &= \sum_{t=0}^{\infty} \beta^t \log \left(A k_t^\alpha - \beta A k^\alpha \right) \\
+    &= \sum_{t=0}^{\infty} \beta^t \log k_t^\alpha + \frac{1}{1-\beta}\log A + \frac{1}{1-\beta}\log (1-\alpha\beta)\\
+    &= \frac{\alpha}{1-\alpha\beta}\log k_0 + \frac{1-\beta+ \alpha\beta}{(1-\beta)^2}\log ((1-\alpha\beta)A) 
 \end{align*}
-Since the second term is caluculated as
+
+Let $D$ be the terms not depending on $k_0$ in the right hand side of $V_{h_j}(k_0)$. Then,
+\begin{gather*}
+    V_{h_j}(k_0) = \frac{\alpha}{1 - \alpha \beta} \log k_0 + D
+\end{gather*}
+From now on, find the $k'$ that maximizes
 \begin{align*}
-    \sum_{t=0}^{\infty} \beta^t \log k_t^\alpha
-    &= \sum_{t=o}^{\infty} \beta^t \alpha^{t+1} \log k_0 + \sum_{t=o}^{\infty} \beta^t (\alpha + \cdots + \alpha^t) \log \left(\frac{\alpha \beta}{1 - \beta + \alpha \beta} A \right) \\
-    &= \frac{\alpha}{1 - \alpha \beta} \log k_0 + \frac{\alpha \beta}{(1-\beta)(1-\alpha \beta)} \log \left(\frac{\alpha \beta}{1 - \beta + \alpha \beta} A \right) 
+    \log(A k^\alpha - k') + \beta V_{h_j}(k')
+    &= \log(A k^\alpha - k') + \frac{\alpha \beta}{1 - \alpha \beta} \log k' + \beta D\\
+    &= \log \left( (A k^\alpha - k') k'^{\frac{\alpha \beta}{1 - \alpha \beta} }\right)+ \beta D
 \end{align*}
+The first order condition is
+\begin{gather*}
+    - k'^{\frac{\alpha \beta}{1 - \alpha \beta}} + \frac{\alpha \beta}{1 - \alpha \beta}(A k^\alpha - k')k'^{\frac{\alpha \beta}{1 - \alpha \beta} -1} = 0\\
+    \therefore \quad k' = h_{j+1}(k) =  \alpha \beta A k^\alpha
+\end{gather*}
+Now, $h_{j+1} (k) = h_{j}(k)= \alpha \beta A k^\alpha$, so the the policy function converges.
+
+Thus, we have
+\begin{align*}
+    V(k) 
+    &= \frac{\alpha}{1 - \alpha \beta} \log k + \frac{1}{1-\alpha\beta} \log A + \text{constant}\\
+    &= \frac{1}{1 - \alpha \beta} \log (A k^\alpha) + \text{constant}
+\end{align*}
+
 
 \section{} %3 Nitta
 
@@ -144,15 +305,38 @@ The first-order conditions are
 \end{align*}
 Thus, the Euler equation is
 \begin{gather*}
-    U'(c_t) = \beta U'(c_{t+1})(1+r_{t+1})
+    U'(c_t) = \beta U'(c_{t+1})(1+r_{t+1}) \tag{EE}
 \end{gather*}
 The transversality condition is
 \begin{gather*}
-    \lim_{t \to \infty} \beta^t (1+r_{t+1}) U'(c_t) b_t = 0
+    \lim_{t \to \infty} \beta^t (1+r_{t+1}) U'(c_t) b_t = 0 \tag{TVC}
 \end{gather*}
 with $c_t = b_t - \frac{b_{t+1}}{1 + r_{t+1}} + e$.
 
 \subsection*{(c)}
+Suppose (EE) and (TVC) hold. Iterating (EE) backward, we have
+\begin{align*}
+    U'(c_t) 
+    &= \frac{1}{\beta (1+r_{t})} U'(c_{t-1})\\
+    &= \frac{1}{\beta (1+r_{t})} \frac{1}{\beta (1+r_{t-1})} U'(c_{t-2})\\
+    &= \cdots \\
+    &= \frac{1}{\beta^t} U'(c_{0}) \prod_{\tau=1}^{t} \frac{1}{1+r_{\tau}}
+\end{align*}
+Thus, we have
+\begin{gather*}
+    \prod_{\tau=1}^{t} \frac{1}{1+r_{\tau}} = \beta^t \frac{U'(c_t)}{U'(c_0)}
+\end{gather*}
+Substituting this into the left hand side of (NPG), we have
+\begin{gather*}
+    (LHS) = \frac{1}{U'(c_0)} \lim_{t \to \infty} \beta^t U'(c_t) b_t
+\end{gather*}
+As for (TVC), it hods that
+\begin{gather*}
+    |\beta^t (1+r_{t+1}) U'(c_t) b_t| \geq |\beta^t U'(c_t) b_t| \geq 0
+\end{gather*}
+for all $t$, since $r_{t+1}>0$.
+Because $\lim_{t \to \infty} |\beta^t (1+r_{t+1}) U'(c_t) b_t| = 0$ by (TVC), then $\lim_{t \to \infty} |\beta^t U'(c_t) b_t| = 0$ also holds. Therefore, $\lim_{t \to \infty} \beta^t U'(c_t) b_t = 0$. Here, (NPG) condition is met, especially with equality.
+
 
 
 \section{} %4
