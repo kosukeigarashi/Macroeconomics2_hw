@@ -1,0 +1,318 @@
+%各自の環境に応じて修正
+%\documentclass[a4paper,11pt]{jarticle}
+\documentclass{ltjsarticle}
+
+\usepackage{appendix}
+\usepackage{float}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[american]{babel}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{graphics}
+\usepackage{physics}
+\usepackage{mathtools}
+\usepackage{amssymb,amsmath,amsfonts,eurosym,geometry,graphicx,caption,color,setspace,comment,footmisc,caption,pdflscape,array,hyperref}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\newcolumntype{d}{S[
+    input-open-uncertainty=,
+    input-close-uncertainty=,
+    parse-numbers = false,
+    table-align-text-pre=false,
+    table-align-text-post=false
+ ]}
+
+ 
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\rmfamily}
+\titleformat*{\subsection}{\large\rmfamily}
+\titleformat*{\subsubsection}{\rmfamily}
+ 
+
+%テキストの表示領域の調節
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-40truemm}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-45truemm}
+
+%余白の調節
+\setlength{\topmargin}{-10.4truemm}
+\setlength{\evensidemargin}{-5.4truemm}
+\setlength{\oddsidemargin}{-5.4truemm}
+\setlength{\headheight}{17pt}
+\setlength{\headsep}{10mm}
+\addtolength{\headsep}{-17pt}
+\setlength{\footskip}{5mm}
+
+% \renewcommand{\thesection}{\Alph{section}}
+% \renewcommand{\thesubsection}{\alph{subsection}}
+
+
+\title{Macroeconomics $\mathrm{II}$ Homework 3}
+\date{\today}
+\author{Graduate School of Economics, The University of Tokyo\\[4mm]29--246029 Rin NITTA\\ 29-246033 Rei HANARI \\ 29--246004 Kosuke IGARASHI}
+
+\begin{document}
+\maketitle
+\section*{Q1}
+\subsection*{(a)}
+
+
+The recursive formulation of a standard neoclassical growth
+model studied in class in Lecture 3 is
+\begin{align*}
+    v(k)=\max_{0\leq k'\leq f(k)} \qty{U(f(k)-k')+\beta v(k')}.
+\end{align*}
+
+
+Define metricx space $(B(X),d)$, the space of bounded functions on $X=[0,\infty)$ with the sup-norm $d$, and difine operator $T$ as 
+\begin{align*}
+    Tv(k)=\max_{0\leq k'\leq f(k)} \qty{U(f(k)-k')+\beta v(k')}.
+\end{align*}
+
+Then, by showing $T$ satisfies Blackwerll's condition, we can show $T$ is a contraction mapping. Then, by CMT, we can show convergent $k$ is an unique fixed point.
+
+
+\subsection*{(b)}
+
+Let $X$ be a set. Consider the space $B(X)$ of all bounded functions $f: X \to \mathbb{R}$, equipped with the \textit{supremum norm}:
+\[
+\|f\|_{\infty} = \sup_{x \in X} |f(x)|.
+\]
+The metric on $B(X)$ is defined as:
+\[
+d(f, g) = \|f - g\|_{\infty}.
+\]
+
+We aim to show that the metric space $(B(X), d)$ is complete, i.e., every Cauchy sequence of functions in $B(X)$ converges to a function in $B(X)$.
+
+% \subsection*{Step 1: Cauchy Sequence in $B(X)$}
+Let $\{f_n\}$ be a Cauchy sequence in $(B(X), d)$. By definition, for every $\epsilon > 0$, there exists $N \in \mathbb{N}$ such that for all $m, n \geq N$:
+\[
+\|f_n - f_m\|_{\infty} < \epsilon,
+\]
+which implies:
+\[
+\sup_{x \in X} |f_n(x) - f_m(x)| < \epsilon.
+\]
+
+For each $x \in X$, the sequence $\{f_n(x)\}$ is a Cauchy sequence in $\mathbb{R}$ because:
+\[
+|f_n(x) - f_m(x)| < \epsilon \quad \text{for all } m, n \geq N.
+\]
+Since $\mathbb{R}$ is complete, $\{f_n(x)\}$ converges to a limit, say $f(x) \in \mathbb{R}$. Thus, we can define a pointwise limit function $f: X \to \mathbb{R}$ by:
+\[
+f(x) = \lim_{n \to \infty} f_n(x), \quad \text{for each } x \in X.
+\]
+
+% \subsection*{Step 2: $f$ is Bounded}
+Since $\{f_n\} \subseteq B(X)$, each $f_n$ is bounded, i.e., there exists $M_n$ such that $\|f_n\|_{\infty} \leq M_n$. Let $M = \sup_n M_n$. Then for all $n$ and $x \in X$:
+\[
+|f_n(x)| \leq M.
+\]
+Taking the limit as $n \to \infty$, we obtain:
+\[
+|f(x)| \leq M, \quad \text{for all } x \in X.
+\]
+Thus, $f$ is bounded, and hence $f \in B(X)$.
+
+% \subsection*{Step 3: Uniform Convergence of $\{f_n\}$ to $f$}
+For $\epsilon > 0$, there exists $N \in \mathbb{N}$ such that for all $m, n \geq N$:
+\[
+\|f_n - f_m\|_{\infty} < \epsilon.
+\]
+Fix $n \geq N$. Then for all $x \in X$:
+\[
+|f_n(x) - f_m(x)| < \epsilon \quad \text{for all } m \geq N.
+\]
+Taking the limit as $m \to \infty$, we get:
+\[
+|f_n(x) - f(x)| \leq \epsilon.
+\]
+Thus:
+\[
+\|f_n - f\|_{\infty} \leq \epsilon \quad \text{for all } n \geq N.
+\]
+This shows that $\{f_n\}$ converges uniformly to $f$.
+
+% \subsection*{Step 4: Conclusion}
+Since $\{f_n\}$ is a Cauchy sequence in $(B(X), d)$ and converges uniformly to $f \in B(X)$, the metric space $(B(X), d)$ is complete.
+
+
+\subsection*{(c)}
+
+Suppose not, there exists feasible allocation $\{\tilde{c}_t^1,\ \tilde{c}_t^2\}^{\infty}_{t=0,\ s^t\in S^t}$ such that
+\begin{align*}
+    u(\hat{c}^i) \leq u(\tilde{c}^i) \ \text{for all } i\in \qty{1,2}\\
+    u(\hat{c}^i) < u(\tilde{c}^i) \ \text{for some } i\in \qty{1,2}
+\end{align*}
+
+Without loss of generality, assume strict inequality holds for $i=1$.
+
+Suppose
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^1(s^t) \geq \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^1(s^t).
+\end{align*}
+
+Then as $\hat{c}^1$ is CE, $u(\hat{c}^1) \geq u(\tilde{c}^1)$. Therefore,
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^1(s^t) < \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^1(s^t).
+\end{align*}
+
+Suppose
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^2(s^t) > \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^2(s^t).
+\end{align*}
+Then there exists $\delta>0$ such that
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^2(s^t) \geq \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^2(s^t) + \delta.
+\end{align*}
+
+Define $\bar{c}^2$ as
+\begin{align*}
+    \bar{c}^2_t(s^t) &= \tilde{c}^2_t &\text{for } t\neq 0\\
+    \bar{c}^2_0(s^0) &= \tilde{c}^2_0+\pi(s_0)\delta &\text{for } t= 0
+\end{align*}
+
+Then
+\begin{align*}
+    u(\bar{c}^2) \geq u(\tilde{c}^2) \geq u(\hat{c}^2).
+\end{align*}
+
+This contradicts that $\hat{c}^2$ is CE.
+Hence,
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^2(s^t) \leq \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^2(s^t).
+\end{align*}
+
+Then
+\begin{align*}
+    \sum_{i\in \qty{1,2}}\sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \hat{c}_t^i(s^t) < \sum_{i\in \qty{1,2}}\sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) \tilde{c}_t^i(s^t).
+\end{align*}
+
+As $(\hat{c}^1,\hat{c}^2)$ and $(\tilde{c}^1, \tilde{c}^2)$ are feasible,
+\begin{align}
+    \forall t\ \forall s^t\in S^t\ \ \ \  \hat{c}^1_t(s^t) + \hat{c}^2_t(s^t) = \tilde{c}^1_t(s^t) +\tilde{c}^2_t(s^t)
+\end{align}
+
+Hence
+\begin{align*}
+    \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) < \sum^{\infty}_{t=0} \sum_{s^t\in S^t} P_t(s^t) 
+\end{align*}
+
+This is a contradiction.
+This shows $(\hat{c}^1,\hat{c}^2)$ is a Pareto efficient allocation.
+
+
+
+
+\section*{Q2}
+
+\subsection*{(a)}
+
+
+\subsection*{(b)}
+
+
+\subsection*{(c)}
+
+
+\section*{Q3}
+\subsection*{(a)}
+\begin{align*}
+P^2 = 
+    \begin{bmatrix}
+    0.83 & 0.15 & 0.01 & 0.01 \\
+    0.31 & 0.41 & 0.15 & 0.13 \\
+    0.05 & 0.27 & 0.53 & 0.15 \\
+    0.17 & 0.17 & 0.27 & 0.39
+    \end{bmatrix}.
+\end{align*}
+For all $i,j\in \qty{1,2,3,4,}$, $P^2_{ij}>0$. Therefore, by the LS theorem 2.2.2, P has a unique stationary distribution and the process is
+asymptotically stationary.
+
+
+
+\subsection*{(b)}
+Stationary distribution $\pi = (\pi_1,\pi_2,\pi_3,\pi_4)$ of $P$ satisfies
+\begin{align*}
+    \pi^T &= \pi^T P\\
+    \begin{bmatrix}\pi_1\\\pi_2\\\pi_3\\\pi_4\end{bmatrix}
+        &=\begin{bmatrix}
+            0.9\pi_1 + 0.2\pi_2 + 0.0\pi_3 + 0.1\pi_4 \\
+            0.1\pi_1 + 0.6\pi_2 + 0.2\pi_3 + 0.1\pi_4 \\
+            0.0\pi_1 + 0.1\pi_2 + 0.7\pi_3 + 0.2\pi_4 \\
+            0.0\pi_1 + 0.1\pi_2 + 0.1\pi_3 + 0.6\pi_4
+            \end{bmatrix}
+\end{align*}
+
+Solving this, we have 
+\begin{align*}
+    \pi = (\frac{6}{11},  \frac{5}{22},  \frac{3}{22}, \frac{1}{11})
+\end{align*}
+
+
+\subsection*{(c)}
+\subsubsection*{(i)}
+
+\begin{align*}
+    Pr(e^1_{t+1}|e^1_{t})=0.9\\
+    Pr(e^1_{t+1}|e^2_{t})=0.2\\
+    Pr(e^1_{t+1}|e^3_{t})=0.0\\
+    Pr(e^1_{t+1}|e^4_{t})=0.1\\
+    Pr(e^2_{t+1}|e^1_{t})=0.1\\
+    Pr(e^3_{t+1}|e^2_{t})=0.1\\
+    Pr(e^4_{t+1}|e^3_{t})=0.1
+\end{align*}
+
+Then, the likelihood is 
+\begin{align*}
+    \qty(\frac{6}{11}*0.9+\frac{5}{22}*0.2+\frac{3}{22}*0+\frac{1}{11}*0.1)*0.1^3=\frac{6}{11000}
+\end{align*}
+
+\subsubsection*{(ii)}
+
+\begin{align*}
+    Pr(e^1_{t+1}|e^1_{t})=0.9\\
+    Pr(e^1_{t+1}|e^2_{t})=0.2\\
+    Pr(e^1_{t+1}|e^3_{t})=0.0\\
+    Pr(e^1_{t+1}|e^4_{t})=0.1
+\end{align*}
+
+
+Then, the likelihood is 
+\begin{align*}
+    \qty(\frac{6}{11}*0.9+\frac{5}{22}*0.2+\frac{3}{22}*0+\frac{1}{11}*0.1)*0.9^3=\frac{4374}{11000}
+\end{align*}
+
+
+
+\subsection*{(d)}
+
+\begin{align*}
+    E[y_1|e_0=e^1] = 0.9*0 + 0.1*1 = 0.1
+\end{align*}
+
+
+\begin{align*}
+    P^5 = \begin{bmatrix}
+        0.70524 & 0.19908 & 0.05284 & 0.04284 \\
+        0.44100 & 0.25652 & 0.17908 & 0.12340 \\
+        0.23420 & 0.27964 & 0.31708 & 0.16908 \\
+        0.31476 & 0.24476 & 0.25964 & 0.18084
+        \end{bmatrix}.
+\end{align*}
+
+\begin{align*}
+    E[y_5|e_0=e^1] = 0.70524*0 + 0.19908*1 + 0.05284*2 + 0.04284*4 = 0.47612.
+\end{align*}
+
+
+
+\end{document}
