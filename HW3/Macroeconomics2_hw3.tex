@@ -26,7 +26,22 @@
     parse-numbers = false,
     table-align-text-pre=false,
     table-align-text-post=false
- ]}
+]}
+\usepackage{listings} 
+\usepackage{xcolor}
+\lstdefinestyle{matlab}{
+  language=Matlab,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  commentstyle=\color{green!60!black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false
+}
 
  
 \usepackage{titlesec}
@@ -216,9 +231,108 @@ This shows $(\hat{c}^1,\hat{c}^2)$ is a Pareto efficient allocation.
 
 \subsection*{(a)}
 
+Given $k_0$ and $z_0$, the recursive formulation of the problem is
+\begin{align*}
+    w(k_0, z_0)
+    &= \max_{\{c_t\}_{t=0}^\infty} E_0 \sum^{\infty}_{t=0} \beta^t \log(c_t)\\ 
+    &= \max_{\{k_{t+1}\}_{t=0}^\infty} E_0 \sum^{\infty}_{t=0} \beta^t \log(e^{z_t} k_t^\alpha + (1-\delta)k_t  - k_{t+1})\\
+    &= \max_{k_1} \left[\log(e^{z_0} k_0^\alpha + (1-\delta)k_0  - k_1) +  \beta \max_{\{k_{t+1}\}_{t=1}^\infty} \sum^{\infty}_{t=1} \sum_{z_t} \beta^{t-1} \pi_t (z_t) \log(e^{z_t} k_t^\alpha + (1-\delta)k_t  - k_{t+1}) \right]\\
+    &= \max_{k_1} \left[\log(e^{z_0} k_0^\alpha + (1-\delta)k_0  - k_1) +  \beta \sum_{z_1} \pi_1 (z_1 | z_0) w(k_1, z_1) \right] 
+\end{align*}
+
 
 \subsection*{(b)}
 
+The grid $Z$, the transition matrix $P$, and the stationary distribution $\pi$ gained by Tauchen's method are as follows:
+
+\begin{gather*}
+    Z = \begin{pmatrix}
+        -0.6822\\
+        -0.3441\\
+        0 \\
+        0.3441\\
+        0.6822\\
+    \end{pmatrix}
+    , \quad
+    P = \begin{pmatrix}
+        0.8491  &  0.1509  &  0.0000  &  0.0000  &       0\\
+        0.0195  &  0.8962  &  0.0843  &  0.0000  &       0\\
+        0.0000  &  0.0427  &  0.9147  &  0.0427  &  0.0000\\
+        0.0000  &  0.0000  &  0.0843  &  0.8962  &  0.0195\\
+        0  &  0.0000  &  0.0000  &  0.1509  &  0.8491
+    \end{pmatrix}
+    , \quad
+    \pi = \begin{pmatrix}
+        0.0305\\
+        0.2361\\
+        0.4668\\
+        0.2361\\
+        0.0305
+    \end{pmatrix}
+\end{gather*}
+
+The Matlab code is below.
+\lstset{style=matlab}
+\begin{lstlisting}
+function [Z,Zprob] = tauchen(N,mu,rho,sigma,m)
+
+    Z = zeros(N,1); % Grid
+    Zprob = zeros(N,N); % Transition Matrix
+    c = (1-rho)*mu; % Constant
+
+    % Define Grids 
+    zmax  = m*sqrt(sigma^2/(1-rho^2));
+    zmin  = -zmax;
+    w = (zmax-zmin)/(N-1);
+    Z = linspace(zmin,zmax,N)';
+
+    % Stationary value, mu
+    Z = Z + mu;
+
+    % Create Transition Matrix
+    for j = 1:N
+        for k = 1:N
+            if k == 1
+                Zprob(j,k) = normcdf((Z(1)-c-rho*Z(j)+w/2)/sigma);
+            elseif k == N
+                Zprob(j,k) = 1 - normcdf((Z(N)-c-rho*Z(j)-w/2)/sigma);
+            else
+                Zprob(j,k) = normcdf((Z(k)-c-rho*Z(j)+w/2)/sigma) - ...
+                            normcdf((Z(k)-c-rho*Z(j)-w/2)/sigma);
+            end
+        end
+    end
+end
+
+N = 5;
+mu = 0;
+rho = 0.9;
+sigma = 0.1;
+m = 3;
+
+[Z,Zprob] = tauchen(N,mu,rho,sigma,m);
+
+disp('Grid (Z):');
+disp(Z);
+
+disp('Transition matrix (P):');
+disp(Zprob);
+
+[V, D] = eig(Zprob');
+[~, idx] = max(abs(diag(D)));
+pi = V(:, idx); 
+pi = pi / sum(pi);
+
+disp('stationary distribution:');
+disp(pi);
+
+figure;
+bar(Z, pi, 'FaceColor', [0.2, 0.6, 0.8]);
+xlabel('State space z_t');
+ylabel('Stationary distribution pi');
+title('Stationary distribution of AR(1) process by Tauchen's method');
+grid on;
+\end{lstlisting}
 
 \subsection*{(c)}
 

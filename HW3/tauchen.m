@@ -1,6 +1,6 @@
 function [Z,Zprob] = tauchen(N,mu,rho,sigma,m)
- 
-    %Z = zeros(N,1); % Grid
+
+    Z = zeros(N,1); % Grid
     Zprob = zeros(N,N); % Transition Matrix
     c = (1-rho)*mu; % Constant
 
@@ -26,14 +26,5 @@ function [Z,Zprob] = tauchen(N,mu,rho,sigma,m)
             end
         end
     end
-
-
-N = 5; % Number of Grid Points, the number of potential realizations of z.
-mu = 0; % Mean
-rho = 0.9; % AR(1) Coefficient
-sigma = 0.1; % Standard Deviation
-m = 3; % Number of Standard Deviations
-
-
-[Z,Zprob] = tauchen(N,mu,rho,sigma,m);
+end
 
