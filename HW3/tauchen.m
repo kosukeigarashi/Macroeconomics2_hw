@@ -1,6 +1,5 @@
 function [Z,Zprob] = tauchen(N,mu,rho,sigma,m)
 
-    Z = zeros(N,1); % Grid
     Zprob = zeros(N,N); % Transition Matrix
     c = (1-rho)*mu; % Constant
 
@@ -21,8 +20,7 @@ function [Z,Zprob] = tauchen(N,mu,rho,sigma,m)
             elseif k == N
                 Zprob(j,k) = 1 - normcdf((Z(N)-c-rho*Z(j)-w/2)/sigma);
             else
-                Zprob(j,k) = normcdf((Z(k)-c-rho*Z(j)+w/2)/sigma) - ...
-                            normcdf((Z(k)-c-rho*Z(j)-w/2)/sigma);
+                Zprob(j,k) = normcdf((Z(k)-c-rho*Z(j)+w/2)/sigma) - normcdf((Z(k)-c-rho*Z(j)-w/2)/sigma);
             end
         end
     end

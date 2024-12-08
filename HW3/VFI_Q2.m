@@ -1,75 +1,70 @@
-N = 5; % Number of Grid Points, the number of potential realizations of z.
-mu = 0; % Mean
-rho = 0.9; % AR(1) Coefficient
-sigma = 0.1; % Standard Deviation
-m = 3; % Number of Standard Deviations
+beta = 0.95;
+alpha = 0.4;
+delta = 0.06;
+u = @(c) log(c);
+k_min = 0;
+k_max = 10;
+Nk = 100;
+k_grid = linspace(k_min, k_max, Nk)';
 
-[Z,Zprob] = tauchen(N,mu,rho,sigma,m);
+Nz = 5;
+mu = 0;
+rho = 0.9;
+sigma = 0.1;
+m = 1;
+[Z,Zprob] = tauchen(Nz,mu,rho,sigma,m);
 
-% パラメータ設定
-beta = 0.95;                % 割引因子
-tau = 0.05;                 % 所得税率
-alpha = 0.4;                % 資本分配率
-u = @(c) log(c);            % 効用関数: log(c)
-max_iter = 1000;            % 最大反復回数
-tol = 1e-6;                 % 収束許容誤差
+V = zeros(Nk, Nz);
+policy_k = zeros(Nk, Nz);
 
-% 状態と消費の関係を表すグリッドの生成
-[z_mat, z_prime_mat] = meshgrid(Z, Z); % グリッド行列化
-c = z_mat - z_prime_mat;                        % 消費: 現在のz - 次期のz'
-
-% 消費が正でない場合は効用を無効化
-c(c <= 0) = NaN;
-
-% 効用行列の計算
-U = u(c); % 効用行列
-
-% 初期化
-V = zeros(N, 1);       % 初期価値関数 (ゼロベクトル)
-policy = zeros(N, 1);  % 政策関数 (次期の選択)
-
-% 価値関数反復
+max_iter = 1000; 
+tol = 1e-6;    
 for iter = 1:max_iter
-    V_new = zeros(N, 1);  % 更新後の価値関数
-    for i = 1:N
-        % 次期の価値の期待値
-        EV = P(i, :) * V;
+    V_new = zeros(Nk, Nz);
+    for i = 1:Nk
+        for j = 1:Nz
+            z0 = Z(j); 
+            k0 = k_grid(i);
 
-        % 現在の効用 + 割引期待値
-        total_value = U(i, :) + beta * EV;
+            c = exp(z0) * k0^alpha + (1 - delta) * k0 - k_grid;
+            U = u(c);
+            U(c <= 0) = -inf; 
 
-        % 最大値とそのインデックスを取得
-        [V_new(i), policy(i)] = max(total_value);
+            EV = V * Zprob(j,:)'; 
+
+            total_value = U + beta * EV;
+
+            [V_new(i,j), policy_index] = max(total_value);
+            policy_k(i,j) = k_grid(policy_index);
+        end
     end
-
-    % 収束判定
-    if max(abs(V_new - V)) < tol
-        disp(['収束しました (反復回数: ', num2str(iter), ')']);
+    
+    if max(abs(V_new(:) - V(:))) < tol
+        disp(['Converged (number of iterations: ', num2str(iter), ')']);
         break;
     end
-    V = V_new; % 更新
+    V = V_new;
 end
 
-% 結果の表示
-disp('最適価値関数:');
-disp(V);
-
-disp('最適政策関数 (次期の状態インデックス):');
-disp(policy);
-
-% 最適政策のプロット
-optimal_policy = grid_z(policy); % 次期の最適状態
 figure;
-plot(grid_z, optimal_policy, 'LineWidth', 2);
-xlabel('現在の状態 z');
-ylabel('最適次期状態 z''');
-title('最適政策関数');
+hold on;
+for i_z = 1:Nz
+    plot(k_grid, V(:, i_z), 'DisplayName', ['z = ', num2str(Z(i_z))]);
+end
+xlabel('Capital k');
+ylabel('Value function V(k, z)');
+title('Value functions (for each z_t)');
+legend show;
 grid on;
 
-% 価値関数のプロット
 figure;
-plot(grid_z, V, 'LineWidth', 2);
-xlabel('状態 z');
-ylabel('価値関数 V(z)');
-title('価値関数');
+hold on;
+for i_z = 1:Nz
+    plot(k_grid, policy_k(:, i_z), 'DisplayName', ['z = ', num2str(Z(i_z))]);
+end
+xlabel('Capital k');
+ylabel('Optimal next capital k''');
+title('Policy functions (for each z_t)');
+legend show;
 grid on;
+

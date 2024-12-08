@@ -2,7 +2,7 @@ N = 5; % Number of Grid Points, the number of potential realizations of z.
 mu = 0; % Mean
 rho = 0.9; % AR(1) Coefficient
 sigma = 0.1; % Standard Deviation
-m = 3; % Number of Standard Deviations
+m = 1; % Number of Standard Deviations
 
 
 [Z,Zprob] = tauchen(N,mu,rho,sigma,m);
