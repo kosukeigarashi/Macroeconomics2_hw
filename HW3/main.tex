@@ -1,0 +1,789 @@
+\documentclass[a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage{physics} 
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{docmute}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{tikz}
+\usepackage{fancyvrb}
+\usepackage{bm}
+\usepackage{tcolorbox}
+\usepackage[legacycolonsymbols]{mathtools}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{minted}
+\usepackage{xcolor}
+\usepackage{physics}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\captionsetup{compatibility=false}
+
+\captionsetup[figure]{font=small}
+\captionsetup[table]{justification=centering}
+\captionsetup[figure]{justification=centering}
+
+
+\newcommand{\argmin}{\mathop{\rm argmin}\limits}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\al}{\alpha}
+
+
+%python
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codered}{rgb}{0.6,0,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\title{Macroeconomics $\mathrm{II}$ Homework 1}
+\date{\today}
+\author{Graduate School of Economics, The University of Tokyo\\[4mm]29--246029 Rin NITTA\\ 29-246033 Rei HANARI \\ 29--246004 Kosuke IGARASHI
+}
+
+
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{} %1
+We used monthly real interest rate data from January 1982 to October 2024, and average annual hours worked per worker from 1950 to 2019.
+The code is shown below.
+
+\begin{minted}[frame=single, linenos, fontsize=\small, bgcolor=gray!10]{stata}
+opts = spreadsheetImportOptions("NumVariables", 2);
+opts.Sheet = "FRED Graph";
+opts.DataRange = "A12:B307";
+opts.VariableNames = ["date", "Rgdp"];
+opts.VariableTypes = ["datetime", "double"];
+gdp = readtable("A939RX0Q048SBEA.xls", opts, "UseExcel", false)
+
+opts = spreadsheetImportOptions("NumVariables", 2);
+opts.Sheet = "FRED Graph";
+opts.DataRange = "A13:B526";
+opts.VariableNames = ["date", "Rate"];
+opts.VariableTypes = ["datetime", "double"];
+rate = readtable("fredgraph.xls", opts, "UseExcel", false)
+
+opts = spreadsheetImportOptions("NumVariables", 2);
+opts.Sheet = "FRED Graph";
+opts.DataRange = "A12:B81";
+opts.VariableNames = ["date", "hours"];
+opts.VariableTypes = ["datetime", "double"];
+work = readtable("AVHWPEUSA065NRUG.xls", opts, "UseExcel", false)
+
+date1 = datenum(gdp{:,1});
+GDP = double(gdp{:,2});
+p1 = polyfit(date1, GDP, 1);
+trend1 = polyval(p1, date1);
+cycle1 = GDP - trend1
+
+date2 = datenum(rate{:,1});
+RATE = double(rate{:,2});
+p2 = polyfit(date2, RATE, 1);
+trend2 = polyval(p2, date2);
+cycle2 = RATE - trend2
+
+date3 = datenum(work{:,1});
+WORK = double(work{:,2});
+p3 = polyfit(date3, WORK, 1);
+trend3 = polyval(p3, date3);
+cycle3 = WORK - trend3
+
+[t1, c1] = hpfilter(GDP, 'Smoothing', 1600);
+length1 = size(date1, 1);
+stationary1 = zeros(length1, 1);
+
+[t2, c2] = hpfilter(RATE, 'Smoothing', 14400);
+length2 = size(date2, 1);
+stationary2 = zeros(length2, 1);
+
+[t3, c3] = hpfilter(WORK, 'Smoothing', 100);
+length3 = size(date3, 1);
+stationary3 = zeros(length3, 1);
+
+figure
+plot(date1, t1); hold on;
+plot(date1, trend1)
+plot(date1, GDP)
+legend('HP Trend', 'Linear Trend', 'Data')
+axis tight; hold off
+
+figure
+plot(date1, c1); hold on;
+plot(date1, cycle1)
+plot(date1, stationary1)
+legend('HP Cycle', 'Linear Cycle', 'Zero')
+axis tight; hold off
+
+figure
+plot(date2, t2); hold on;
+plot(date2, trend2)
+plot(date2, RATE)
+legend('HP Trend', 'Linear Trend', 'Data')
+axis tight; hold off
+
+figure
+plot(date2, c2); hold on;
+plot(date2, cycle2)
+plot(date2, stationary2)
+legend('HP Cycle', 'Linear Cycle', 'Zero')
+axis tight; hold off
+
+figure
+plot(date3, t3); hold on;
+plot(date3, trend3)
+plot(date3, WORK)
+legend('HP Trend', 'Linear Trend', 'Data')
+axis tight; hold off
+
+figure
+plot(date3, c3); hold on;
+plot(date3, cycle3)
+plot(date3, stationary3)
+legend('HP Cycle', 'Linear Cycle', 'Zero')
+axis tight; hold off
+\end{minted}
+
+
+\subsection*{(a)}
+The figure for log real GDP per capita is Figure 1.
+
+
+
+
+
+\begin{figure}[htbp]
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.40]{trend_plot1}
+    \subcaption{Trend of log real GDP per capita}
+  \end{minipage}
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.40]{cycle_plot1}
+    \subcaption{Cycle of log real GDP per capita}
+  \end{minipage}
+  \caption{10-year real interest rate}
+\end{figure}
+
+
+
+\subsection*{(b)}
+
+The figure for 10-year real interest rate is Figure 2 and Figure 3 is average annual hours worked per worker.
+
+Log real interest rate is linear but, 10 year interest rate have linear decreasing trend and cycling component. Average annual hours worked per worker also have downward trend, but this is very different from linear.
+\color{black}
+
+
+\begin{figure}[htbp]
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.4]{trend_plot2.png}
+    \subcaption{Trend of log real GDP per capita}
+  \end{minipage}
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.4]{cycle_plot2.png}
+    \subcaption{Cycle of log real GDP per capita}
+  \end{minipage}
+  \caption{aver-
+age annual hours worked per worker}
+\end{figure}
+
+
+\begin{figure}[htbp]
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.4]{trend_plot3.png}
+    \subcaption{Trend of log real GDP per capita}
+  \end{minipage}
+  \begin{minipage}[b]{0.49\linewidth}
+    \centering
+    \includegraphics[keepaspectratio, scale=0.4]{cycle_plot3.png}
+    \subcaption{Cycle of log real GDP per capita}
+  \end{minipage}
+  \caption{10-year real interest rate}
+\end{figure}
+
+\section{} %2
+
+\begin{minted}[frame=single, linenos, fontsize=\small, bgcolor=gray!10]{stata}
+function eq_wage = bisection_method(func, a, b, tol)
+
+    if func(a) * func(b) >= 0
+        error('f(a)とf(b)は異符号でなければなりません');
+    end
+
+    while (b - a) / 2 > tol
+        c = (a + b) / 2;
+        if func(c) == 0
+            break; 
+        elseif func(a) * func(c) < 0
+            b = c; 
+        else
+            a = c;
+        end
+    end
+    eq_wage = (a + b) / 2;
+end
+
+function eq_wage = golden_section_search(func, a, b, tol)
+    phi = (1 + sqrt(5)) / 2;  
+    resphi = 2 - phi;
+
+    c = a + resphi * (b - a);
+    d = b - resphi * (b - a);
+
+    fc = abs(func(c));
+    fd = abs(func(d));
+
+    while abs(b - a) > tol
+        if fc < fd
+            b = d;
+            d = c;
+            c = a + resphi * (b - a);
+            fd = fc;
+            fc = abs(func(c));
+        else
+            a = c;
+            c = d;
+            d = b - resphi * (b - a);
+            fc = fd;
+            fd = abs(func(d));
+        end
+    end
+
+    eq_wage = (a + b) / 2; 
+end
+
+
+sigma = 0.7;
+psi = 1.5;
+theta = 0.5;
+A = 2.0;
+alpha = 0.6;
+
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
+
+
+tol = 1e-4; 
+eq_wage_bisection = bisection_method(market_eq, 1.0, 5.0, tol);
+fprintf('Equilibrium wage (Bisection): %.6f\n', eq_wage_bisection);
+
+eq_wage_golden = golden_section_search(market_eq, 1.0, 5.0, tol);
+fprintf('Equilibrium wage (Golden-section): %.6f\n', eq_wage_golden);
+
+
+
+
+(c)
+market_eq = @(w) labor_supply(w) - labor_demand(w);
+
+options = optimoptions('fsolve', 'Display', 'iter');
+eq_wage_fsolve = fsolve(market_eq, 3, options);
+
+fprintf('Equilibrium wage using fsolve: %.2f\n', eq_wage_fsolve);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage_fsolve));
+
+(d)
+sigma = 1.3;
+psi = 1.5;
+theta = 0.5;
+A = 2.0;
+alpha = 0.6;
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
+
+(e)
+sigma = 1.3;
+psi = 1.5;
+theta = 0.5;
+A = 4.0;
+alpha = 0.6;
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
+\end{minted}
+
+\subsection*{(a)}
+The Lagrangian is
+\begin{gather*}
+    \mathcal{L} = \frac{c^{1-\sigma} - 1}{1 - \sigma} - \psi \frac{h^{1 + \frac{1}{\theta}}}{1 + \frac{1}{\theta}} - \mu(c - wh)
+\end{gather*}
+The FOCs are
+\begin{align*}
+    \frac{\partial \mathcal{L}}{\partial c} = c^{-\sigma} - \mu = 0\\
+    \frac{\partial \mathcal{L}}{\partial h} = \psi h^{\frac{1}{\theta}} + \mu w = 0\\
+    \frac{\partial \pi}{\partial l} = \alpha A l^{\alpha - 1} - w = 0
+\end{align*}
+
+
+\subsection*{(b)}
+The equilibrium wage calculated by bisection search is 1.261215. That by d golden-section search is 1.261213.
+
+\subsection*{(c)}
+By fsolve, we have the equilibrium wage 1.261215. This is almost same as the equilibrium wage we got in (b).
+
+\subsection*{(d)}
+When $\sigma$ = 1.3, the equilibrium wage 1.271507 was obtained. \\
+As $\sigma$ increases, the equilibrium wage rate also increases. $\sigma$ indicates the level of relative risk aversion. Therefore, as $\sigma$ grows, a household becomes more risk averse, and consequently demands a higher wage rate.
+
+\subsection*{(e)}
+When $\sigma$ is 1.3 and A becomes 4.0, the equilibrium wage 2.610412 was obtained
+
+
+\section{} %3
+Let $\Gamma = \qty[ \alpha K^{\frac{\rho-1}{\rho}}+(1-\alpha)L^{\frac{\rho-1}{\rho}} ]$.
+
+\subsection*{(a)}
+\begin{align*}
+    F(\lambda K, \lambda L) &= \qty[ \alpha (K\lambda)^{\frac{\rho-1}{\rho}}+(1-\alpha)(\lambda L)^{\frac{\rho-1}{\rho}} ]^{\frac{\rho}{\rho-1}}\\
+    &=\qty[\Gamma \lambda^\frac{\rho-1}{\rho}]^{\frac{\rho}{\rho-1}}\\
+    &= \lambda F(K,L)
+\end{align*}
+Hence, this production function is homogeneous of degree 1.
+
+
+
+\subsection*{(b)}
+Now, the marginal product of labor and capital are
+\begin{gather*}
+    \frac{\partial F}{\partial K} =  \Gamma^{\frac{1}{\rho-1}} \alpha K^{- \frac{1}{\rho}}\\
+    \frac{\partial F }{\partial L } =  \Gamma^{\frac{1}{\rho-1}} (1-\alpha) L^{- \frac{1}{\rho}}
+\end{gather*}
+
+Then, the marginal rate of substitution (MRS) is 
+\begin{gather*}
+    MRS = \frac{\frac{\partial F }{\partial K }}{\frac{\partial F }{\partial L }} = \frac{\Gamma^{\frac{1}{\rho-1}} \alpha K^{- \frac{1}{\rho}}}{\Gamma^{\frac{1}{\rho-1}} (1-\alpha) L^{- \frac{1}{\rho}}} = \frac{\alpha}{1-\alpha} \left( \frac{K}{L} \right)^{- \frac{1}{\rho}}.
+\end{gather*}
+
+The elasticity of substitution between capital and labor can be defined as
+\begin{align*}
+    e 
+    &= - \frac{d (\frac{K}{L}) / \frac{K}{L}}{d (MRS)/ MRS}\\
+    &= -\frac{d (\frac{K}{L})}{d (MRS)} \frac{MRS}{\frac{K}{L}}\\
+    &= \rho \left(\frac{K}{L}\right)^{\frac{\rho+1}{\rho}} \frac{1-\alpha}{\alpha} \frac{\alpha}{1-\alpha} \left( \frac{K}{L}\right)^{- \frac{\rho+1}{\rho}}\\
+    &= \rho
+\end{align*}
+
+Here, the elasticity of substitution is constant. 
+
+\begin{comment}
+\begin{align*}
+\frac{\partial F(K,L)}{\partial K} &= \frac{1}{\rho-1} \Gamma \qty[ \frac{\rho-1}{\rho} \alpha K^{-\frac{1}{\rho}} ]\\
+\frac{\partial F(K,L)}{\partial L} &= \frac{1}{\rho-1} \Gamma \qty[ \frac{\rho-1}{\rho} (1-\alpha) K^{-\frac{1}{\rho}} ]
+\end{align*}
+
+Thus elasticity $e$ is 
+\begin{align*}
+    e= \frac{\frac{\partial F(K,L)}{\partial K}}{\frac{\partial F(K,L)}{\partial L}} = \frac{1-\alpha}{\alpha} \qty(\frac{K}{L})^{\frac{1}{\rho}}
+\end{align*}
+\end{comment}
+
+
+
+
+\subsection*{(c)}
+Let $\gamma = \frac{\rho-1}{\rho}$. Then,
+\begin{align*}
+\ln Y = \frac{1}{\gamma} \ln\qty{\alpha K^{\gamma}+(1-\alpha)L^\gamma}.
+\end{align*}
+
+As 
+\begin{align*}
+    \lim_{\gamma\rightarrow 0} \ln\qty{\alpha K^{\gamma}+(1-\alpha)L^\gamma} = \lim_{\gamma\rightarrow 0} \gamma = 0,
+\end{align*}
+by L'Hopital's raw,
+\begin{align*}
+    \lim_{\gamma\rightarrow 0} \frac{\ln\qty{\alpha K^{\gamma}+(1-\alpha)L^\gamma}^{'}}{\gamma^{'}} &= \lim_{\gamma\rightarrow 0} \frac{\alpha K^\gamma \ln K + (1-\alpha)L^\gamma \ln L}{\alpha K^\gamma + (1-\alpha)L^\gamma }\\
+    &= \alpha  \ln K + (1-\alpha) \ln L\\
+    &= \ln \qty[K^\alpha L^{1-\alpha}]
+\end{align*}
+
+
+
+\section{} %4
+
+\subsection*{(a)}
+A competitive Arrow-Debreu equilibrium is prices $\{\hat{p_t}(s^t)\}_{t=0, s^t \in S^t}^\infty$ and allocations $\{\hat{c_t^i}(s^t)\}_{t=0, s^t \in S^t}^\infty$ for $i = 1, 2$ such that
+\begin{align*}
+    \max_{\{c_t^i(s^t)\}_{t=0, s^t \in S^t}^\infty} \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \beta^t \pi(s^t) \log c^i_t(s^t)\\
+    & \text{s.t. }\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \hat{p_t}(s^t) c^i_t(s^t) \leq \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \hat{p_t}(s^t) e^i_t(s^t)\\
+    & c^i_t \geq 0 \text{ for all }t,\text{ all }s^t \in S^t
+\end{align*}
+and goods market clear, i.e.,
+\begin{align*}
+    \hat{c^1_t}(s^t) + \hat{c^2_t}(s^t) = e^1_t(s^t) + e^2_t(s^t) \text{ for all } t, \text{ all } s^t \in S^t
+\end{align*}
+
+\subsection*{(b)}
+Let $\mu^i$ be the Lagrange multiplier on the budget constraint.\\
+The FOCs w.r.t. $c^i_t(s^t)$ and $c_o^i(s^0)$ are as below.
+\begin{align*}
+    \frac{\beta^t \pi(s^t)}{c^i_t(s^t)} = \mu^i p_t(s^t)\\
+    \frac{\pi(s^0)}{c_0^i(s^0)} = \mu^i p_o(s^0)
+\end{align*}
+From these equations,
+\begin{align*}
+    \frac{p_t(s^t)}{p_0(s^0)} = \beta^t \frac{\pi(s^t)}{\pi(s^0)} \frac{c_0^i(s^0)}{c_t^i(s^t)}
+\end{align*}
+Thus,
+\begin{align*}
+    \frac{c_0^2(s^0)}{c_0^1(s^0)} = \frac{c_t^2(s^t)}{c_t^1(s^t)}
+\end{align*}
+holds.
+Then, there exist $\theta^i \geq 0$ with $\Sigma_i \theta^i = 1$ such that
+\begin{align*}
+    c_t^i(s^t) = \theta^i e_t(s^t)\\
+    \text{where }\theta^i = \frac{\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p^t(s^t) e_t^i (s^t)}{\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p^t(s^t) e_t (s^t)}\\
+    \text{s.t. }\theta^1 + \theta^2 = 1
+\end{align*}
+with $e_t(s^t) = \Sigma_i e_t^i (s^t)$.
+By using this and normalizing $p_0(s^0) = 1$,
+\begin{align*}
+    p_t(s^t) = \beta^t \frac{\pi(s^t)}{\pi(s^0)}\frac{e_0(s^0)}{e_t(s^t)}
+\end{align*}
+
+\subsection*{(c)}
+Let $q_t(s^t, s_{t+1})$ denote price at period t of a contract that pays one unit of consumption in period $t+1$ if $t+1$ event is $s_{t+1}$.\\
+Let $a_{t+1}^i(s^t, s_{t+1})$ be the quantities of Arrow securities bought at period t by agent i.\\
+A sequential market equilibrium is allocations $(\hat{c^i}, \hat{a^i})_{i = 1, 2}$ and prices $\hat{q}$ such that
+\begin{align*}
+    & \text{For }i = 1, 2, \text{ given }\hat{q}, (\hat{c^i}, \hat{a^i})_{i = 1, 2} \text{ solves}\\
+    & \max_{c^i, a^i} \log c^i_t(s^t)\\
+    & \text{s.t. }\log c_t^i(s^t) + \Sigma_{s_{t+1} \in S} \hat{q_t}(s^t, s_{t+1}) \leq e_t^i(s^t) + a_t^i(s^t)\\
+    & c_t^i(s^t) \geq 0\\
+    & a_{t+1}^i(s^t, s_{t+1}) \geq - \bar{A^i}\\
+    & \text{for all }t, s^t \in S^t \text{ and }s_{t+1} \in S.
+\end{align*}
+and goods markets clear, i.e.,
+\begin{align*}
+    & \text{For all }t \geq 0,\\
+    & \Sigma_{i = 1, 2} \hat{c_t^i}(s^t) = \Sigma_{i = 1, 2} e_t^i(s^t) \text{ for all }t, s^t \in S^t\\
+    & \Sigma_{i = 1, 2} \hat{a}_{t+1}^i (s^t, s_{t+1}) = 0 \text{ for all }t, s^t \in S^t \text{ and }s_{t+1} \in S
+\end{align*}
+In addition, the natural borrowing limit for each consumer in each state is
+\begin{align*}
+    \bar{A^i} = \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p_t(s^t) e_t^i(s^t)
+\end{align*}
+
+\subsection*{(d)}
+
+\subsection*{(e)}
+
+\section{} %5
+
+\subsection*{(a)}
+Fot this economy, a Pareto-efficient allocation is feasible allocation $\{\tilde{c_t}^1, \tilde{c_t}^2\}_{t=0}^\infty$ such that
+\begin{gather*}
+    \forall c_t^i, \sum_{t=0}^{\infty} \beta_i^t \log \tilde{c_t}^i \geq \sum_{t=0}^{\infty} \beta_i^t \log c_t^i \quad \text{for both } i=1,2 \text{, and}\\
+    \forall c_t^i, \sum_{t=0}^{\infty} \beta_i^t \log \tilde{c_t}^i > \sum_{t=0}^{\infty} \beta_i^t \log c_t^i \quad \text{for at least one } i=1,2 \\
+\end{gather*}
+Note that an allocation $\{c_t^1, c_t^2\}_{t=0}^\infty$ is feasible if
+\begin{enumerate}
+    \item $c_t^i \geq 0$ for all $t$ and $i=1,2$.
+    \item $c_t^1 + c_t^2 = e_t^1 + e_t^2$ for all $t$.
+\end{enumerate}
+For this economy, the first welfare theorem is described as below:\\
+\hspace{5mm} If $\{{c_t^1}^*, {c_t^2}^*\}$ is competitive equilibrium allocation, then the allocation is Pareto efficient.
+
+
+\subsection*{(b)}
+For this economy, the social planner's problem with $\alpha = (\alpha^1, \alpha^2), \sum_{i=1}^{2} \alpha_i=1$ is described as below.
+\begin{gather*}
+    \max_{{c_t^1, c_t^2}_{t=0}^\infty} \alpha^1 \sum_{t=0}^{\infty} \beta_1^t \log c_t^1 + \alpha^2 \sum_{t=0}^{\infty} \beta_2^t \log c_t^2\\
+    \text{s.t.} \quad c_t^1 + c_t^2 = e_t^1 + e_t^2 = 2\quad \text{for all } t\\
+    c_t^i \geq 0 \quad \text{for all } t,i.
+\end{gather*}  
+The Lagrangian is as below.
+\begin{gather*}
+    \mathcal{L} = \alpha^1 \sum_{t=0}^{\infty} \beta_1^t \log c_t^1 + \alpha^2 \sum_{t=0}^{\infty} \beta_2^t \log c_t^2 +\sum_{t=0}^{\infty}  \mu_t (c_t^1 + c_t^2 - e_t^1 - e_t^2).
+\end{gather*}
+The FOCs are
+\begin{gather*}
+    \frac{\partial \mathcal{L}}{\partial c_t^1} = \frac{\alpha^1 \beta_1^t}{c_t^1} - \mu_t = 0,\\
+    \frac{\partial \mathcal{L}}{\partial c_t^2} = \frac{\alpha^2 \beta_2^t}{c_t^2} - \mu_t = 0,\\
+    \frac{\partial \mathcal{L}}{\partial \mu_t} = c_t^1 + c_t^2 - e_t^1 - e_t^2 = 0.
+\end{gather*}
+From these equations, we have
+\begin{gather*}
+    \frac{\alpha^1 \beta_1^t}{c_t^1} = \frac{\alpha^2 \beta_2^t}{c_t^2}.
+\end{gather*}
+About budget constraints, $c_t^1 + c_t^2 = e_t^1 - e_t^2=2$. Then,
+\begin{gather*}
+    \frac{\alpha^1 \beta_1^t}{c_t^1} = \frac{\alpha^2 \beta_2^t}{2-c_t^1}\\
+    (\alpha^2 \beta_2^t + \alpha^1 \beta_1^t) c_t^1 = 2 \alpha^1 \beta_1^t\\
+    c_t^1 = \frac{2 \alpha^1 \beta_1^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}\\
+    c_t^2 = 2-c_t^1 = \frac{2 \alpha^2 \beta_2^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}\\
+    \mu_t = \frac{\alpha^1 \beta_1^t}{c_t^1} = \frac{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}{2}.
+\end{gather*}
+
+\subsection*{(c)}
+The transfer patments are below, respectively.
+\begin{align*}
+    t_1 (\alpha)
+    &= \sum_{t=0}^{\infty} \mu_t (c_t^1 - e_t^1)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}{2} \left(\frac{2 \alpha^1 \beta_1^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t} - 1\right)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}{2} \left(\frac{\alpha^1 \beta_1^t - \alpha^2 \beta_2^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}\right)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^1 \beta_1^t - \alpha^2 \beta_2^t}{2}
+\end{align*}
+\begin{align*}
+    t_2 (\alpha)
+    &= \sum_{t=0}^{\infty} \mu_t (c_t^2 - e_t^2)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}{2} \left(\frac{2 \alpha^2 \beta_2^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t} - 1\right)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}{2} \left(\frac{\alpha^2 \beta_2^t - \alpha^1 \beta_1^t}{\alpha^2 \beta_2^t + \alpha^1 \beta_1^t}\right)\\
+    &= \sum_{t=0}^{\infty} \frac{\alpha^2 \beta_2^t - \alpha^1 \beta_1^t}{2}
+\end{align*}
+
+\subsection*{(d)}
+\begin{align*}
+    t_1 (\alpha)
+    &= \sum_{t=0}^{\infty} \frac{\alpha^1 \beta_1^t - \alpha^2 \beta_2^t}{2}\\
+    &= \frac{\alpha^1}{2} \sum_{t=0}^{\infty} \beta_1^t - \frac{\alpha^2}{2} \sum_{t=0}^{\infty} \beta_2^t\\
+    &= \frac{\alpha^1}{2} \frac{1}{1-\beta_1} - \frac{\alpha^2}{2} \frac{1}{1-\beta_2}\\
+\end{align*}
+\begin{align*}
+    t_1 (\theta \alpha)
+    &= \sum_{t=0}^{\infty} \frac{\theta \alpha^1 \beta_1^t - \theta \alpha^2 \beta_2^t}{2}\\
+    &= \frac{\theta \alpha^1}{2} \sum_{t=0}^{\infty} \beta_1^t - \frac{\theta \alpha^2}{2} \sum_{t=0}^{\infty} \beta_2^t\\
+    &= \frac{\theta \alpha^1}{2} \frac{1}{1-\beta_1} - \frac{\theta \alpha^2}{2} \frac{1}{1-\beta_2}\\
+    &= \theta t_1 (\alpha)
+\end{align*}
+In addition, 
+\begin{gather*}
+    t_1 (\alpha) + t_2 (\alpha) = \frac{\alpha^1}{2} \frac{1}{1-\beta_1} - \frac{\alpha^2}{2} \frac{1}{1-\beta_2} + \frac{\alpha^2}{2} \frac{1}{1-\beta_1} - \frac{\alpha^1}{2} \frac{1}{1-\beta_2} = 0.
+\end{gather*}
+Therefore, $t_1 (\theta \alpha) + t_2 (\theta \alpha) = \theta t_1 (\alpha) + \theta t_2 (\alpha) = 0$.
+
+\subsection*{(e)}
+Solving $t_1 (\alpha) = 0$ gives
+\begin{gather*}
+    \frac{\alpha^1}{2} \frac{1}{1-\beta_1} - \frac{\alpha^2}{2} \frac{1}{1-\beta_2} = 0\\
+    \alpha^1 (1-beta_2) = (\alpha^1 - 1)(1-\beta_1) = 0\\
+    (2-\beta_1 - \beta_2) \alpha^1 = 1-\beta_1\\
+\end{gather*}
+Then, we have
+\begin{gather*}
+    \alpha^1 = \frac{1-\beta_1}{2-\beta_1 - \beta_2}, \quad \alpha^2 = \frac{1-\beta_2}{2-\beta_1 - \beta_2}.
+\end{gather*}
+\begin{align*}
+    c_t^1
+    &= \frac{2 \alpha^1 \beta_1^t}{\alpha^1 \beta_1^t + \alpha^2 \beta_2^t}\\
+    &= \frac{2 \frac{1-\beta_1}{2-\beta_1 - \beta_2} \beta_1^t}{\frac{1-\beta_1}{2-\beta_1 - \beta_2} \beta_1^t + \frac{1-\beta_2}{2-\beta_1 - \beta_2} \beta_2^t}\\
+    &= \frac{2 (1-\beta_1) \beta_1^t}{(1-\beta_1) \beta_1^t + (1-\beta_2) \beta_2^t}
+\end{align*}
+\begin{gather*}
+    c_t^2 
+    &= 2 - c_t^1 
+    &= \frac{2 (1-\beta_2) \beta_2^t}{(1-\beta_1) \beta_1^t + (1-\beta_2) \beta_2^t}
+\end{gather*}
+\begin{align*}
+    \mu_t 
+    &= \frac{\alpha^1 \beta_1^t}{c_t^1}\\
+    &= \frac{1-\beta_1}{2-\beta_1-\beta_2} \frac{\beta_1^t [\beta_1^t(1-\beta_1)+ \beta_2^t (1-\beta_2)]}{2\beta_1^t (1-\beta_1)}\\
+    &= \frac{[\beta_1^t(1-\beta_1)+ \beta_2^t (1-\beta_2)]}{2(2-\beta_1-\beta_2)} 
+\end{align*}
+Since $p_{t+1} c_{t+1}^i = \beta_i p_t c_t^i$, we have
+\begin{gather*}
+    p_t = p_0 \frac{(1-\beta_1)\beta_1^t + (1-\beta_2)\beta_2^t}{(2-\beta_1 - \beta_2)}.
+\end{gather*}
+From $0 < \beta_1 < \beta_2$, $\lim_{t \to \infty} c_t^1 =0, \lim_{t \to \infty} c_t^2 =2$.
+
+
+\section{} %6
+
+\subsection*{(a)}
+A competitive Arrow-Debreu equilibrium (ADE) is given by a price vector $(p_1, p_2)$ and allocations $(c_1^1, c_1^2, c_2^1, c_2^2)$ such that
+\begin{enumerate}
+    \item Given prices $(p_1, p_2)$, for $i = 1,2$, $(c_1^i, c_2^i)$ solve the consumer's problem
+    \begin{gather*}
+        \max_{(c_1^i, c_2^i)} \log c_1^i + \beta \logc_2^i \quad \text{s.t.} \quad p_1 c_1^i + p_2 c_2^i \leq p_1 e_1^i + p_2 e_2^i \quad \text{ and } \quad c_t^i \geq 0 \quad (t = 1,2).
+    \end{gather*}
+    \item Goods markets clear
+    \begin{gather*}
+        c_t^1 + c_t^2 = e_t^1 + e_t^2 \quad (t=1,2).
+    \end{gather*}
+    with $(e_1^1, e_2^1) = (e^1, 0)$ and $(e_1^2, e_2^2) = (0, e^2)$.
+\end{enumerate}
+
+\subsection*{(b)}
+
+A sequential market equilibrium (SME) is given by allocations $\{(c_t^i, a_{t+1}^i)_{i=1,2}\}_{t=1}^2$ such that
+\begin{enumerate}
+    \item Given interest rates $r_{t+1}$, for $i = 1,2$, $\{(c_t^i, a_{t+1}^i)_{i=1,2}\}_{t=1}^2$ solve the consumer's problem
+    \begin{gather*}
+        \max_{\{(c_t^i, a_{t+1}^i)_{i=1,2}\}_{t=1}^2} \log c_1^i + \beta \log c_2^i \\
+        \text{s.t.} \quad  c_t^i + \frac{a_{t+1}^i}{1 + r_{t+1}} \leq e_t^i + a_t^i, \\
+         \quad c_t^i \geq 0 ,\\
+         \text{ and } \quad a_{t+1}^i \geq -{\overline{A}}^i \\
+         (t = 1,2)
+    \end{gather*}
+    \item 
+    \begin{gather*}
+        c_1^1 + c_1^2 = e_1^1\\
+        c_2^1 + c_2^2 = e_2^2\\ 
+        a_2^1 + a_2^2  = a_3^1 + a_3^2  = 0,
+    \end{gather*}
+    where $a_{t+1}^i$ is the amount of bonds owned by consumer $i$ at the beginning of period $t+1$ with $a_1^i = 0$, and $\overline{A}^i$ is the maximum amount of bonds that consumer $i$ can borrow.
+\end{enumerate}
+
+\subsection*{(c)}
+First, we compute the ADE. Define Lagrangean as
+\begin{gather*}
+    \mathcal{L} = \log c_1^i + \beta \log c_2^i - \lambda_i (p_1 c_1^i + p_2 c_2^i - p_1 e_1^i + p_2 e_2^i)
+\end{gather*}
+The first-order conditions with respect to $c_1^i$ and $c_2^i$ are
+\begin{gather*}
+    \frac{\partial \mathcal{L}}{\partial c_1^i} = \frac{1}{c_1^i} - \lambda_i p_1 = 0, \\
+    \frac{\partial \mathcal{L}}{\partial c_2^i} = \frac{\beta}{c_2^i} - \lambda_i p_2 = 0.
+\end{gather*}
+Combining these two equations, we have
+\begin{gather*}
+    p_2 c_2^i = \beta p_1 c_1^i.
+\end{gather*}
+Rearranging this equation, we have
+\begin{gather*}
+    c_2^i = \beta \frac{p_1}{p_2} c_1^i.
+\end{gather*}
+Further, summing this equation over $i=1,2$, we have
+\begin{gather*}
+    p_2 (c_2^1 + c_2^2) = \beta p_1 (c_1^1 + c_1^2).
+\end{gather*}
+By the goods market clearing condition, we have
+\begin{gather*}
+    p_2 e^2 = \beta p_1 e^1.
+\end{gather*}
+Thus, we have $\frac{p_2}{p_1} = \beta \frac{e^1}{e^2}$. The budget constraint is 
+\begin{gather*}
+    p_1 c_1^1 + p_2 c_2^1 = p_1 e_1\\
+    p_1 c_1^2 + p_2 c_2^2 = p_2 e_2.
+\end{gather*}
+Substituting $c_2^i = \beta \frac{p_1}{p_2} c_1^i$ and $\frac{p_2}{p_1} = \beta \frac{e^1}{e^2}$ into the budget constraint, we have
+\begin{gather*}
+    c_1^1 = \frac{e^1}{1 + \beta}, \quad c_1^2 = \frac{\beta}{1 + \beta}e^1,  \quad c_2^1 = \frac{e^2}{1 + \beta}, \quad c_2^2 = \frac{\beta}{1 + \beta}e^2, \quad \frac{p_2}{p_1} = \beta \frac{e^1}{e^2}. 
+\end{gather*}
+
+Next, we compute the SME. Note that $a_1^i = a_3^i = 0$. Assume $\overline{A}^i$ is sufficiently large.Define Lagrangean as 
+\begin{gather*}
+    \mathcal{L} = \log c_1^i + \beta \log c_2^i - \lambda_1^i \left( c_1^i + \frac{a_{2}^i}{1 + r_2} - e_1^i \right) - \lambda_2^i \left( c_2^i - e_2^i - a_2^i \right).
+\end{gather*}
+The first-order conditions with respect to $c_1^i, c_2^i$ and $a_2^i$ are
+\begin{gather*}
+    \frac{\partial \mathcal{L}}{\partial c_1^i} = \frac{1}{c_1^i} - \lambda_1^i = 0, \\
+    \frac{\partial \mathcal{L}}{\partial c_2^i} = \frac{\beta}{c_2^i} - \lambda_2^i = 0, \\
+    \frac{\partial \mathcal{L}}{\partial a_2^i} = -\frac{\lambda_1^i}{1 + r_2} + \lambda_2^i = 0.
+\end{gather*}
+Combining these three equations, we have
+\begin{gather*}
+    c_2^i = \beta (1 + r_2) c_1^i 
+\end{gather*}
+Further, summing this equation over $i=1,2$, we have
+\begin{gather*}
+    c_2^1 + c_2^2 = \beta (1 + r_2) (c_1^1 + c_1^2).
+\end{gather*}
+By the goods market clearing condition, we have
+\begin{gather*}
+    e^2 = \beta (1 + r_2) e^1.
+\end{gather*}
+Thus, we have $\frac{1}{1+r_2} = \beta \frac{e^1}{e^2}$. 
+Substituting this and $c_2^i = \beta (1 + r_2) c_1^i$, we have the SME as 
+\begin{gather*}
+    c_1^1 = \frac{e^1}{1 + \beta}, \quad c_2^1 = \frac{e^2}{1 + \beta }, \quad c_1^2 = \frac{\beta}{1 + \beta}e^1, \quad c_2^2 = \frac{\beta}{1 + \beta }e^2,\\
+     \quad a_2^1 = \frac{e^2}{1 + \beta }, \quad a_2^2 = -\frac{e^2}{1 + \beta },
+    \quad \frac{1}{1+r_2} = \beta \frac{e^1}{e^2}.
+\end{gather*}
+
+Therefore, the allocations in the ADE and SME are the same.
+
+\subsection*{(d)}
+
+Suppose $e^1 = e^2 = 1$ and $\beta = 0.9$. Then, the ADE is calculated as
+\begin{gather*}
+    c_1^1 = \frac{1}{1 + 0.9} = \frac{10}{19}, \quad c_1^2 = \frac{0.9}{1 + 0.9} = \frac{9}{19}, \quad c_2^1 = \frac{1}{1 + 0.9} = \frac{10}{19}, \quad c_2^2 = \frac{0.9}{1 + 0.9} = \frac{9}{19}, \quad \frac{p_2}{p_1} = 0.9.
+\end{gather*}
+In each period, consumer 1 consumes more than consumer 2. This is because that the endowment of consumer 2 is relatively undervalued than that of consumer 1. As the budget constraints show, the budget they have are $p_1 e_1$ and $p_2 e_2$ respactively. Since $\frac{p_2}{p_1} = 0.9 < 1$, the budget of consumer 2 is relatively smaller than that of consumer 1, even if the amounts of endowment are the same, $e^1 = e^2 = 1$. This is because the value of endowment is discounted ($\beta < 1$).
+
+In the case of $\beta = 1.0$, the ADE is calculated as
+\begin{gather*}
+    c_1^1 = \frac{1}{1 + 1} = \frac{1}{2}, \quad c_1^2 = \frac{1}{1 + 1} = \frac{1}{2}, \quad c_2^1 = \frac{1}{1 + 1} = \frac{1}{2}, \quad c_2^2 = \frac{1}{1 + 1} = \frac{1}{2}, \quad \frac{p_2}{p_1} = 1.
+\end{gather*}
+In this case, as the value of endowment is not discounted, the budget of consumer 1 and 2 are the same. Thus, they consume the same amount of goods in each period.
+
+%Matlabコード書く時のフォーマット
+\begin{comment}
+\begin{lstlisting}[style=Matlab-editor]
+
+\end{lstlisting}
+\end{comment}
+
+\end{document}

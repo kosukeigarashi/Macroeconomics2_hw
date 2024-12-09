@@ -1,0 +1,150 @@
+function eq_wage = bisection_method(func, a, b, tol)
+
+    if func(a) * func(b) >= 0
+        error('f(a)とf(b)は異符号でなければなりません');
+    end
+
+    while (b - a) / 2 > tol
+        c = (a + b) / 2;
+        if func(c) == 0
+            break;
+        elseif func(a) * func(c) < 0
+            b = c;
+        else
+            a = c;
+        end
+    end
+    eq_wage = (a + b) / 2;
+end
+
+function eq_wage = golden_section_search(func, a, b, tol)
+    phi = (1 + sqrt(5)) / 2;
+    resphi = 2 - phi;
+
+    c = a + resphi * (b - a);
+    d = b - resphi * (b - a);
+
+    fc = abs(func(c));
+    fd = abs(func(d));
+
+    while abs(b - a) > tol
+        if fc < fd
+            b = d;
+            d = c;
+            c = a + resphi * (b - a);
+            fd = fc;
+            fc = abs(func(c));
+        else
+            a = c;
+            c = d;
+            d = b - resphi * (b - a);
+            fc = fd;
+            fd = abs(func(d));
+        end
+    end
+
+    eq_wage = (a + b) / 2;
+end
+
+
+sigma = 0.7;
+psi = 1.5;
+theta = 0.5;
+A = 2.0;
+alpha = 0.6;
+
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
+
+
+tol = 1e-4;
+eq_wage_bisection = bisection_method(market_eq, 1.0, 5.0, tol);
+fprintf('Equilibrium wage (Bisection): %.6f\n', eq_wage_bisection);
+
+eq_wage_golden = golden_section_search(market_eq, 1.0, 5.0, tol);
+fprintf('Equilibrium wage (Golden-section): %.6f\n', eq_wage_golden);
+
+
+
+
+(c)
+market_eq = @(w) labor_supply(w) - labor_demand(w);
+
+options = optimoptions('fsolve', 'Display', 'iter');
+eq_wage_fsolve = fsolve(market_eq, 3, options);
+
+fprintf('Equilibrium wage using fsolve: %.2f\n', eq_wage_fsolve);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage_fsolve));
+
+(d)
+sigma = 1.3;
+psi = 1.5;
+theta = 0.5;
+A = 2.0;
+alpha = 0.6;
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
+
+(e)
+sigma = 1.3;
+psi = 1.5;
+theta = 0.5;
+A = 4.0;
+alpha = 0.6;
+
+w_grid = linspace(1.0, 5.0, 20);
+
+labor_supply = @(w) (w.^(1-sigma) / psi) .^ (1 / (sigma + 1/theta));
+
+labor_demand = @(w) (alpha * A ./ w) .^ (1 / (1 - alpha));
+
+figure;
+plot(w_grid, labor_supply(w_grid), 'r', 'DisplayName', 'Labor Supply');
+hold on;
+plot(w_grid, labor_demand(w_grid), 'b', 'DisplayName', 'Labor Demand');
+xlabel('Wage (w)');
+ylabel('Labor');
+legend;
+title('Labor Supply and Demand');
+
+eq_wage = fzero(@(w) labor_supply(w) - labor_demand(w), [1, 5]);
+
+fprintf('Equilibrium wage: %.2f\n', eq_wage);
+fprintf('Equilibrium labor: %.2f\n', labor_supply(eq_wage));
