@@ -92,5 +92,62 @@ model studied in class in Lecture 3 is
 
 \section*{Q4}
 
+\subsection*{(a)}
+
+Vacancies are filled at rate
+\begin{gather*}
+  \frac{m(u,v)}{v} = \frac{u}{v+u} = \frac{\frac{1}{\theta}}{1+\frac{1}{\theta}} = m \left(\frac{1}{\theta}, 1\right) \equiv q(\theta)
+\end{gather*}
+As we did in the lecture, suppose there is a continuum of workers with measure 1. Every period, $\lambda(1-u)$ workers enter unemployment, and $\theta q(\theta) u $ workers find a job.
+\begin{gather*}
+  \Delta u = \lambda(1-u) + \theta q(\theta) u
+\end{gather*}
+At the steady state, $\Delta u = 0$, so we have
+\begin{align*}
+  u 
+  &= \frac{\lambda}{\lambda + \theta q(\theta)}\\
+  &= \frac{\lambda}{\lambda + \frac{1}{1+\frac{1}{\theta}}}\\
+  &= \frac{\lambda}{\lambda + \frac{\theta}{\theta+1}}
+\end{align*}
+
+\subsection*{(b)}
+At any period of steady state, $1-u$ workers are employed. For each employed worker, the probability of transitioning from employment to unemployment is $\lambda$, and the probability of being unemployed for $n$ periods is $(1- \theta q(\theta))^n$. Therefore, for each $n=1,2,\cdots$, 
+\begin{gather*}
+  u_n = \lambda (1-u) (1- \theta q(\theta))^n
+\end{gather*}
+\begin{align*}
+  \sum_{n=1}^{\infty} u_n
+  &= \frac{\lambda (1-u)}{1 - (1- \theta q(\theta))}\\
+  &= \frac{\lambda \left(1-\frac{\lambda}{\lambda + \frac{\theta}{\theta+1}}\right)}{\theta q(\theta)}\\
+  &= \frac{\lambda}{\lambda + \frac{\theta}{\theta+1}}\\
+  &= u
+\end{align*}
+
+\subsection*{(c)}
+
+\subsection*{(d)}
+
+\begin{align*}
+  V &= -pc + \beta \{q(\theta)J + [1-q(\theta)]V \}\\
+  J &= p - w + \beta[\lambda V + (1-\lambda)J]
+\end{align*}
+
+\subsection*{(e)}
+
+Workers' states are classified in 3 states: employed, unemployed for 1 period, and unemployed for 2 or more periods. 
+Let $U_1$ be the value of unemployment for 1 period, $U_2$ be the value of unemployment for 2 or more periods, and $W$ be the value of employment. Then,
+\begin{align*}
+  U_1 &= z + \beta \left\{ \theta q(\theta) W + [1-\theta q(\theta)] U_2 \right\}\\
+  U_2 &= 0 + \beta \left\{ \theta q(\theta) W + [1-\theta q(\theta)] U_2 \right\}\\
+  W &= w + \beta \left\{\lambda U_1 + (1-\lambda) W \right\}
+\end{align*}
+
+\subsection*{(f)}
+
+Free entry implies $V=0$. Then, solving the equations in (d) gives
+\begin{gather*}
+  p = w + \frac{\left(\frac{1-\beta}{\beta} + \lambda\right)pc}{q(\theta)} =  w + \left(\frac{1-\beta}{\beta} + \lambda\right)pc (\theta+1)
+\end{gather*}
+Post vacancies up to the point where marginal product $p$ equals wage $w$ plus expected capitalizes value of hiring costs.
 
 \end{document}
