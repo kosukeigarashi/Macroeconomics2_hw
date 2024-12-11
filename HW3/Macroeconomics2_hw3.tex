@@ -2,6 +2,7 @@
 %\documentclass[a4paper,11pt]{jarticle}
 \documentclass{ltjsarticle}
 
+\usepackage{enumitem}
 \usepackage{appendix}
 \usepackage{float}
 \usepackage{bm}
@@ -510,6 +511,114 @@ Then, the likelihood is
 \begin{align*}
     E[y_5|e_0=e^1] = 0.70524*0 + 0.19908*1 + 0.05284*2 + 0.04284*4 = 0.47612.
 \end{align*}
+
+\section*{Q4}
+
+\subsection*{(a)}
+A competitive Arrow-Debreu equilibrium is prices $\{\hat{p_t}(s^t)\}_{t=0, s^t \in S^t}^\infty$ and allocations $\{\hat{c_t^i}(s^t)\}_{t=0, s^t \in S^t}^\infty$ for $i = 1, 2$ such that
+\begin{align*}
+    \max_{\{c_t^i(s^t)\}_{t=0, s^t \in S^t}^\infty} \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \beta^t \pi(s^t) \log c^i_t(s^t)\\
+    & \text{s.t. }\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \hat{p_t}(s^t) c^i_t(s^t) \leq \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} \hat{p_t}(s^t) e^i_t(s^t)\\
+    & c^i_t \geq 0 \text{ for all }t,\text{ all }s^t \in S^t
+\end{align*}
+and goods market clear, i.e.,
+\begin{align*}
+    \hat{c^1_t}(s^t) + \hat{c^2_t}(s^t) = e^1_t(s^t) + e^2_t(s^t) \text{ for all } t, \text{ all } s^t \in S^t
+\end{align*}
+
+\subsection*{(b)}
+Let $\mu^i$ be the Lagrange multiplier on the budget constraint.\\
+The FOCs w.r.t. $c^i_t(s^t)$ and $c_o^i(s^0)$ are as below.
+\begin{align*}
+    \frac{\beta^t \pi(s^t)}{c^i_t(s^t)} = \mu^i p_t(s^t)\\
+    \frac{\pi(s^0)}{c_0^i(s^0)} = \mu^i p_o(s^0)
+\end{align*}
+From these equations,
+\begin{align*}
+    \frac{p_t(s^t)}{p_0(s^0)} = \beta^t \frac{\pi(s^t)}{\pi(s^0)} \frac{c_0^i(s^0)}{c_t^i(s^t)}
+\end{align*}
+Thus,
+\begin{align*}
+    \frac{c_0^2(s^0)}{c_0^1(s^0)} = \frac{c_t^2(s^t)}{c_t^1(s^t)}
+\end{align*}
+holds.
+Then, there exist $\theta^i \geq 0$ with $\Sigma_i \theta^i = 1$ such that
+\begin{align*}
+    c_t^i(s^t) = \theta^i e_t(s^t)\\
+    \text{where }\theta^i = \frac{\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p^t(s^t) e_t^i (s^t)}{\Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p^t(s^t) e_t (s^t)}\\
+    \text{s.t. }\theta^1 + \theta^2 = 1
+\end{align*}
+with $e_t(s^t) = \Sigma_i e_t^i (s^t)$.
+By using this and normalizing $p_0(s^0) = 1$,
+\begin{align*}
+    p_t(s^t) = \beta^t \frac{\pi(s^t)}{\pi(s^0)}\frac{e_0(s^0)}{e_t(s^t)}
+\end{align*}
+
+\subsection*{(c)}
+Let $q_t(s^t, s_{t+1})$ denote price at period t of a contract that pays one unit of consumption in period $t+1$ if $t+1$ event is $s_{t+1}$.\\
+Let $a_{t+1}^i(s^t, s_{t+1})$ be the quantities of Arrow securities bought at period t by agent i.\\
+A sequential market equilibrium is allocations $(\hat{c^i}, \hat{a^i})_{i = 1, 2}$ and prices $\hat{q}$ such that
+\begin{align*}
+    & \text{For }i = 1, 2, \text{ given }\hat{q}, (\hat{c^i}, \hat{a^i})_{i = 1, 2} \text{ solves}\\
+    & \max_{c^i, a^i} \log c^i_t(s^t)\\
+    & \text{s.t. }\log c_t^i(s^t) + \Sigma_{s_{t+1} \in S} \hat{q_t}(s^t, s_{t+1}) \leq e_t^i(s^t) + a_t^i(s^t)\\
+    & c_t^i(s^t) \geq 0\\
+    & a_{t+1}^i(s^t, s_{t+1}) \geq - \bar{A^i}\\
+    & \text{for all }t, s^t \in S^t \text{ and }s_{t+1} \in S.
+\end{align*}
+and goods markets clear, i.e.,
+\begin{align*}
+    & \text{For all }t \geq 0,\\
+    & \Sigma_{i = 1, 2} \hat{c_t^i}(s^t) = \Sigma_{i = 1, 2} e_t^i(s^t) \text{ for all }t, s^t \in S^t\\
+    & \Sigma_{i = 1, 2} \hat{a}_{t+1}^i (s^t, s_{t+1}) = 0 \text{ for all }t, s^t \in S^t \text{ and }s_{t+1} \in S
+\end{align*}
+In addition, the natural borrowing limit for each consumer in each state is
+\begin{align*}
+    \bar{A^i} = \Sigma_{t=0}^\infty \Sigma_{s^t \in S^t} p_t(s^t) e_t^i(s^t)
+\end{align*}
+
+\subsection*{(d)}
+Let $q_t(s^t, s_{t+1})$ denote the price of the price of one-period state-contingent bonds.\\
+From (b),
+\begin{align*}
+    p_t(s^t) = \beta^t \frac{\pi(s^t)}{\pi(s^0)} \frac{e_0(s^0)}{e_t(s^t)}
+\end{align*}
+Then,
+\begin{align*}
+    q_t(s^t, s_{t+1}) &= \frac{p_{t+1}(s^{t+1})}{p_t(s^t)}\\
+    &= \beta \frac{\pi(s^{t+1})}{\pi(s^t)} \frac{e_t(s^t)}{e_{t+1}(s^{t+1})}
+\end{align*}
+For this economy, 4 price patterns exist.
+\begin{enumerate}[label=(\roman*)]
+    \item $q_t(s^1, s^2) = \beta \times 0.7 \times \frac{1}{3} \fallingdotseq 0.222$
+    \item $q_t(s^1, s^1) = \beta \times 0.3 = 0.285$
+    \item $q_t(s^2, s^1) = \beta \times 0.1 \times 3 = 0.285$
+    \item $q_t(s^2, s^2) = \beta \times 0.9 = 0.855$
+\end{enumerate}
+Let $R_{t+1}(s^{t+1})$ be the gross return.\\
+The gross returns from each bond purchased at time t are
+\begin{enumerate}[label=(\roman*)]
+    \item $q_t(s^1, s^1) = \beta \times 0.3 = 0.285$\\
+    $R_{t+1}(s^1) = 1/0.285 \fallingdotseq 3.509$
+    \item $q_t(s^2, s^1) = \beta \times 0.1 \times 3 = 0.285$\\
+    $R_{t+1}(s^1) = 1/0.285 \fallingdotseq 3.509$
+\end{enumerate}
+
+\subsection*{(e)}
+Let $P_t^B(d; s^t)$ denote the price of one-period risk-free bond.
+\begin{align*}
+    P_t^B(d; s^t) &= \frac{\Sigma_{s^{t+1}} p_{t+1}(s^{t+1})}{p_t(s^t)}\\
+    &= \Sigma_{s^{t+1}} q_t(s^t, s_{t+1})
+\end{align*}
+Therefore, the fross return of the bond $R_{t+1}^B (s^{t+1})$ is
+\begin{enumerate}[label=(\roman*)]
+    \item $s^t = s^1$\\
+    $P_t^B(d; s^1) = 0.285 + 0.222 = 0.507$\\
+    $\therefore R_{t+1}(s^{t+1}) = 1.972$
+    \item $s^t = s^2$\\
+    $P_t^B(d; s^2) = 0.285 + 0.855 = 1.14$\\
+    $\therefore R_{t+1}(s^{t+1}) = 0.877$
+\end{enumerate}
 
 
 
