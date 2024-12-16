@@ -76,17 +76,83 @@
 
 \begin{document}
 \maketitle
+
 \section*{Q1}
 \subsection*{(a)}
+A recursive problem of household is the Bellman equation with an offer $w$ in hand as below.\\
+Let $v(w)$ denote the reservation wage.
 
+\begin{gather*}
+  v(w) = \max_{accept, reject} \left\{ \frac{w}{1 - \beta}, c + \beta \int^B_0 v(w')dF(w') \right\} 
+\end{gather*}
 
-The recursive formulation of a standard neoclassical growth
-model studied in class in Lecture 3 is
+\subsection*{(b)}
+Let $\bar{w}$ denote the reservation wage.
 \begin{align*}
-    v(k)=\max_{0\leq k'\leq f(k)} \qty{U(f(k)-k')+\beta v(k')}.
+    v(w) = 
+    \begin{cases}
+      \max_{accept, reject} \{ \frac{w}{1 - \beta}, c + \beta \int^B_0 v(w')dF(w') \} & \text{if } w \leq \bar{w}  \\
+      \frac{w}{1 - \beta} & \text{if } w \geq \bar{w}
+    \end{cases}
 \end{align*}
 
+Now,
+\begin{align*}
+    v(\bar{w}) = \frac{\bar{w}}{1 - \beta} = c + \beta \int_0^{\bar{w}} 
+ \frac{\bar{w}}{1 - \beta} dF(w') + \beta \int^B_{\bar{w}} \frac{w'}{1 - \beta} dF(w')
+\end{align*}
+Then, we get $\bar{w} - c = \frac{\beta}{1 - \beta} \int^B_{\bar{w}} (w' - w)dF(w')$.\\
+Define the RHS as
+\begin{align*}
+    h(w) = \frac{\beta}{1 - \beta} \int^B_{\bar{w}} (w' - w) dF(w')
+\end{align*}
+Note that
+\begin{align*}
+    &h(0) = E[w] \frac{\beta}{1 - \beta}\\
+    &h(B) = 0\\
+    &h'(w) = \frac{\beta}{1 - \beta} [ -(w' - w) f(w) + \int^\beta_w (-1) dF(w') ] = - \frac{\beta}{1 - \beta} [1 - F(w)] < 0\\
+    & h''(w) = \frac{\beta}{1 - \beta} F'(w) > 0
+\end{align*}
+So the relationship between cost and benefit is described as below.\\
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{hw3_1_graph.jpg}
+    \caption{Relationship between cost and benefit}
+    \label{fig:enter-label}
+\end{figure}
+Therefore, a rise in $\beta$ leads to a rise in $\bar{w}$.\\
+An increase in $\beta$ means that people become more patient, valuing future benefits more highly and thus aspiring to wait for higher wages.\\
+This aligns with the results derived from the equation.
+
+\subsection*{(c)}
+From the graph, a rise in $c$ leads to a rise in $\bar{w}$.\\
+An increase in $c$ means that the compensation for rejecting an offer increases, leading job seekers to pursue employment with higher offers. This is consistentwith the results derived from the equation.
+
+
 \section*{Q2}
+Let the consider the value function for employed and unemployed workers.\\
+Let $\bar{w}$ denote the reservation wage.\\
+(i) Employed workers:\\
+The budget constraint of an unemployed worker at time $t$ is
+\begin{align*}
+    a_{t+1} \leq R_t(a_t + w_tn_t - c_t)
+\end{align*}
+When this constraint binds, $c_t = a_t + w_tn_t - \frac{a_{t+1}}{R_t}$.\\
+So the value function is
+\begin{align*}
+    v(w) = \max_{n_t} \{ p(a_t + w_tn_t - \frac{a_{t+1}}{R_t}, 1 - n_t) + \beta\int_R v(w)dH(R) \}
+\end{align*}
+(ii) Unemployed Workers:\\
+The budget constraint of an unemployed worker at time $t$ is
+\begin{align*}
+    a_{t+1} \leq R_t(a_t + z - c_t)
+\end{align*}
+When this constraint binds, $c_t = a_t + z - \frac{a_{t+1}}{R_t}$.\\
+So the value function is
+\begin{align*}
+    v(w) = \max_{n_t} \{ z + \beta \int^B_0 \int_R v(w') dF(w) dH(R) \}
+\end{align*}
+
 
 \section*{Q3}
 
@@ -124,6 +190,11 @@ At any period of steady state, $1-u$ workers are employed. For each employed wor
 \end{align*}
 
 \subsection*{(c)}
+
+At each period, the government's total tax revenew is $(1-v)\tau$, and the government's total unemployment benefit is $u_1 z$, where $u_1$ is the number of workers who have been unemployed for 1 period. Then the government's budget constraint for each period is
+\begin{gather*}
+  (1-v)\tau = u_1 z
+\end{gather*}
 
 \subsection*{(d)}
 
