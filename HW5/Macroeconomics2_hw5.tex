@@ -83,7 +83,151 @@
 
 \section{} %3
 
+Suppose the market structure is sequential markets. Then the competitive equilibrium is given as a sequential market equilibrium.
+Let $\bar{k}_1$ be the capital stock of the initial old. 
+
+Given $\bar{k}_1$, sequential markets equilibrium is allocations for households $\hat{c}_1^0, \{\hat{c}_t^t, \hat{c}_{t+1}^t, \hat{s}_t^t \}_{t=0}^{\infty}$, allocations fot the firm $\{\hat{K}_t, \hat{L}_t\}_{t=0}^{\infty}$, and prices $\{\hat{r}_t, \hat{w}_t\}_{t=0}^{\infty}$ such that
+\begin{enumerate}
+  \item For all $t \geq 0$, given $(\hat{w}_t, \hat{r}_{t+1})$, $\hat{c}_t^t, \hat{c}_{t+1}^t, \hat{s}_t^t$ solve the household's optimization problem:
+  \begin{gather*}
+    \max_{(c_t^t, c_{t+1}^t) \geq 0, \: s_t^t} \log c_t^t + \beta \log c_{t+1}^t \\
+    \text{s.t.} \qquad c_t^t + s_t^t + \tau_t \leq \hat{w}_t \\
+    c_{t+1}^t \leq (1 + \hat{r}_{t+1} - \delta) s_t^t - b_{t+1}
+  \end{gather*}
+  \item Given $\bar{k}_1$ and $\hat{r}_1$, $\hat{c}_1^0$ solves the household's optimization problem:
+  \item 
+\end{enumerate}
+
+
 \section{} %4
 
+\subsection*{(a)}
+
+Let $V(a_{i,0}, n_{i,0}) = E_0 \left[\max_{\{c_{i,t}\}_{t=0}^{\infty}} \sum_{t=0}^{\infty} \beta^t u(c_{i,t})\right]$ be the value function of the household. The Bellman equation is given by
+\begin{align*}
+    V(a_{i,0}, n_{i,0}) 
+    &= E_0 \left[\max_{\{c_{i,t}\}_{t=0}^{\infty}} \sum_{t=0}^{\infty} \beta^t u(c_{i,t}) \right] \\
+    &= \max_{c_{i,0}, a_{i,1}} u(c_{i,0}) + E_0 \left[ \max_{\{c_{i,t}\}_{t=1}^{\infty}} \sum_{t=1}^{\infty} \beta^t u(c_{i,t}) \right] \\
+    &= \max_{c_{i,0}, a_{i,1}} u(c_{i,0}) + \beta E_0 \left[E_1 \left[\max_{\{c_{i,t+1}\}_{t=0}^{\infty}} \sum_{t=0}^{\infty} \beta^t u(c_{i,t+1}) \right] \right] \\
+    &= \max_{c_{i,0}, a_{i,1}} u(c_{i,0}) + \beta E_0 [V(a_{i,1}, n_{i,1}) ]\\
+\end{align*}
+Then, the recursive problem is given by
+\begin{gather*}
+  V(a,n) = \max_{c, a'} u(c) + \beta E[V(a', n')] 
+\end{gather*}
+where $a$ and $n$ are state variables, and $a'$ and $c$ are control variables.
+
+\subsection*{(b)}
+Let $m(a,n)$ be a measure of households in state $(a,n)$.
+
+A stationary competitive equilibrium is a policy function $a' = g(a,n)$, a distribution $m(a,n)$, and real numbers $K, r$ and $w$ such that
+
+\begin{enumerate}
+  \item prices are determined competitively, that is, $r = F_K (K,N) - \delta = \alpha K_t^{\alpha-1} N_t^{1-\alpha} - \delta$ and $w = F_L (K, N) = (1-\alpha) K_t^\alpha N_t^{-\alpha}$.
+  \item The policy function $a' = g(a,n)$ solves the household's optimization problem.
+  \item The probability distribution $m(a,n)$ is stationary and associated with the policy function $g(a,n)$ and the distribution of $n$.
+  \item The capital $K$ equals the sum of households' savings:
+    \begin{gather*}
+      K = \sum_a \sum_n g(a,n) \cdot m(a,n)
+    \end{gather*}
+    The labor $N$ equals the sum of labor supplied by each household (exogenous):
+    \begin{gather*}
+      L = \sum_a \sum_n n \cdot m(a,n)
+    \end{gather*}   
+\end{enumerate}
+
+\subsection*{(c)}
+
+The grid $Z$, the transition matrix $P$, and the stationary distribution $\pi$ gained by Tauchen's method are as follows:
+\begin{gather*}
+    Z = \begin{pmatrix}
+        -0.8000\\
+        -0.5333\\
+        -0.2667
+              0\\
+        0.2667\\
+        0.5333\\
+        0.8000
+    \end{pmatrix}
+    , \quad
+    P = \begin{pmatrix}
+        0.5530 & 0.2351 & 0.1406 & 0.0548 & 0.0139 & 0.0023 & 0.0003\\
+        0.3204 & 0.2589 & 0.2277 & 0.1305 & 0.0487 & 0.0118 & 0.0021\\
+        0.1431 & 0.2015 & 0.2606 & 0.2195 & 0.1205 & 0.0431 & 0.0117\\
+        0.0478 & 0.1109 & 0.2108 & 0.2611 & 0.2108 & 0.1109 & 0.0478\\
+        0.0117 & 0.0431 & 0.1205 & 0.2195 & 0.2606 & 0.2015 & 0.1431\\
+        0.0021 & 0.0118 & 0.0487 & 0.1305 & 0.2277 & 0.2589 & 0.3204\\
+        0.0003 & 0.0023 & 0.0139 & 0.0548 & 0.1406 & 0.2351 & 0.5530
+    \end{pmatrix}
+    , \quad
+    \pi = \begin{pmatrix}
+        0.1553\\
+        0.1226\\
+        0.1456\\
+        0.1529\\
+        0.1456\\
+        0.1226\\
+        0.1553
+    \end{pmatrix}
+\end{gather*}
+
+The Matlab code is below.
+
+\noindent\textbf{Code: tauchen.m}
+\lstset{style=matlab}
+\begin{lstlisting}
+function [Z,Zprob] = tauchen(N,mu,rho,sigma)
+
+  Zprob = zeros(N,N); % Transition Matrix
+  c = (1-rho)*mu; % Constant
+
+  % Define Grids 
+  zmax  = 2*sigma;
+  zmin  = -zmax;
+  w = (zmax-zmin)/(N-1);
+  Z = linspace(zmin,zmax,N)';
+
+  % Stationary value, mu
+  Z = Z + mu;
+
+  % Create Transition Matrix
+  for j = 1:N
+      for k = 1:N
+          if k == 1
+              Zprob(j,k) = normcdf((Z(1)-c-rho*Z(j)+w/2)/sigma);
+          elseif k == N
+              Zprob(j,k) = 1 - normcdf((Z(N)-c-rho*Z(j)-w/2)/sigma);
+          else
+              Zprob(j,k) = normcdf((Z(k)-c-rho*Z(j)+w/2)/sigma) - normcdf((Z(k)-c-rho*Z(j)-w/2)/sigma);
+          end
+      end
+  end
+end
+\end{lstlisting}
+
+\noindent\textbf{Code: tauchen\_result.m}
+\lstset{style=matlab}
+\begin{lstlisting}
+N = 7; % Number of Grid Points, the number of potential realizations of z.
+mu = 0; % Mean
+rho = 0.9; % AR(1) Coefficient
+sigma = 0.4; % Standard Deviation
+
+[Z,Zprob] = tauchen(N,mu,rho,sigma);
+
+disp('Grid (Z):');
+disp(Z);
+
+disp('Transition matrix (P):');
+disp(Zprob);
+
+[V, D] = eig(Zprob');
+[~, idx] = max(abs(diag(D)));
+pi = V(:, idx); 
+pi = pi / sum(pi);
+
+disp('stationary distribution:');
+disp(pi);
+\end{lstlisting}
 
 \end{document}
