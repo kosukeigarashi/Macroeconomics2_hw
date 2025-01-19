@@ -83,6 +83,8 @@
 
 \section{} %3
 
+\subsection*{(a)}
+
 Suppose the market structure is sequential markets. Then the competitive equilibrium is given as a sequential market equilibrium.
 Let $\bar{k}_1$ be the capital stock of the initial old. Suppose $g_0 = 0$.
 
@@ -127,7 +129,37 @@ These are the same as the budget constraint and the market clearing condition in
 
 \subsection*{(c)}
 
+
+
+Given $\bar{k}_1$, sequential markets equilibrium is allocations for households $\hat{c}_1^0, \{\hat{c}_t^t, \hat{c}_{t+1}^t, \hat{s}_t^t \}_{t=0}^{\infty}$, allocations fot the firm $\{\hat{K}_t, \hat{L}_t\}_{t=0}^{\infty}$, and prices $\{\hat{r}_t, \hat{w}_t\}_{t=0}^{\infty}$ such that
+\begin{enumerate}
+  \item For all $t \geq 0$, given $(\hat{w}_t, \hat{r}_{t+1})$, $(\hat{c}_t^t, \hat{c}_{t+1}^t, \hat{s}_t^t)$ solve the household's optimization problem:
+  \begin{gather*}
+    \max_{(c_t^t, c_{t+1}^t) \geq 0, \: s_t^t} \log c_t^t + \beta \log c_{t+1}^t \\
+    \text{s.t.} \qquad c_t^t + s_t^t + \tau_t \leq \hat{w}_t \\
+    c_{t+1}^t \leq (1 + \hat{r}_{t+1} - \delta) s_t^t + b_{t+1}
+  \end{gather*}
+  \item Given $\bar{k}_1$ and $\hat{r}_1$, $\hat{c}_1^0$ solves the household's optimization problem:
+  \begin{gather*}
+    \max_{c_1^0 \geq 0} \log c_1^0 \\
+    \text{s.t.} \quad c_1^0 \leq (1 + \hat{r}_1 - \delta) \bar{k}_1
+  \end{gather*}
+  \item For all $t \geq 1$, given $(\hat{r}_t, \hat{w}_t)$, $(\hat{K}_t, \hat{L}_t)$ solves the firm's optimization problem:
+  \begin{gather*}
+    \max_{(K_t, L_t) \geq 0} K_t^\alpha L_t^{1-\alpha} - \hat{r}_t K_t - \hat{w}_t L_t
+  \end{gather*}
+  \item For all $t \geq 1$,
+  \begin{itemize}
+    \item Goods market: $N_t \hat{c}_t^t + N_{t-1} \hat{c}_t^{t-1} + \hat{K}_{t+1} - (1-\delta) \hat{K}_t  = \hat{K}_t^\alpha \hat{L}_t^{1-\alpha}$
+    \item Asset market: $N_t \hat{s}_t^t = \hat{K}_{t+1}$
+    \item Labor market: $N_t = \hat{L}_t$
+  \end{itemize}
+\end{enumerate}
+where $(1+n)\tau_t = (1+n)\tau_y =b_t$ for all $t \geq 1$.
+
 \subsection*{(d)}
+
+If $\tau_y$ rises, then $(1+n)\tau_y = b_t$ rises. Then, the households receive more transfer from the government when they are old. For consumption smoothing, the households save less when they are young, that is, $s_t^t$ decreases. Then, by the asset market clearing, $N_t s_t^t = K_{t+1}$ decreases. Therefore, he steady-state capital-labor ratio $k_t = \frac{K_t}{N_t}$ decreases.
 
 \section{} %4
 
