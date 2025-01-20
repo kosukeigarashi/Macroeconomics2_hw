@@ -166,6 +166,58 @@ $\bar{r}$ is the autarkic interest rate.\\
 Therefore, a decrease in $n$ reduces the welfare gains from social security, leading to a reduction in the optimal level of the PAYG social security system.
 
 \section{} %2
+\subsection{(a)}
+SMW is a allocation $\hat{c}^1_0,\ \{\hat{c}^t_t,\ \hat{c}^t_{t+1},\ \hat{s}^t_t \}$ and interest rate $\qty{r_{t+1}}^{\infty}_{t=1}$ such that
+\begin{itemize}
+  \item[1] Given $\qty{r_{t+1}}^{\infty}_{t=1}$, for each $t\geq 1$, $(\hat{c}^t_t,\ \hat{c}^t_{t+1},\ \hat{s}^t_t)$ solves\\
+\begin{align*}
+  max_{{c}^t_t,\ {c}^t_{t+1}} \ln(c^t_t) + \ln(c^t_{t+1})\\
+  s.t.\ \ c^t_t + s^t_t = w_1\\
+  c^t_{t+1} +  = w_1  + s^t_t(1+r_{t+1})\\
+  c^t_t,c^t_{t+1} \geq 0.
+\end{align*}
+  \item[2]  Given $\qty{r_{t+1}}^{\infty}_{t=1}$, for each  $c^0_1$ solves\\
+  \begin{align*}
+    max_{c^0_1} \ln(c^0_1) \\
+    s.t.\ \ c^0_1  = w_2 + m(1+r_1)\\
+    c^0_1\geq 0
+  \end{align*}
+  \item[3] Market clear\\
+   \begin{align*}
+    c^t_{t+1} + c^{t+1}_{t+1} =\omega_1+ \omega_2. 
+   \end{align*} 
+\end{itemize}
+
+\subsection{(b)}
+For $t\geq 1$, let $L^t = \ln(\omega_1-s^t_t) + \ln(\omega_2 + s^t_t(1+r_{t+1})) $.
+From FOC with respect to $s^t_t$ 
+\begin{align*}
+  \frac{1}{\omega_1 - s^t_t} &=\frac{1+r_{t+1}}{\omega_2 + s^2_2(1+r_{t+1})}\\
+  \hat{s}^t_t &= \frac{\omega_1}{2} - \frac{\omega_2}{2(1+r_{t+1})}
+\end{align*}
+
+From maket clear, 
+\begin{align*}
+  s^t_{t+1} = s^t_t (1+r_{t+1}) = m \prod^{t}_{j=0}(1+r_{j+1})
+\end{align*}
+
+
+\subsection{(c)}
+There are infitnitely many equilibrium.
+
+From constraint,
+\begin{align*}
+  \forall\ t\geq 1\ \  -\frac{\omega_2}{1+r_{t+1}} \leq \hat{s}^t_t \leq \omega_1.
+\end{align*}
+
+As  $s^1_1 =  (1+r_1)m$, any $r_1$ that satisfy
+\begin{align*}
+  \frac{-\omega_2}{1+r_{t+1}} \leq (1+r_1)m \leq \omega_1
+\end{align*}
+makes equilibrium. Thus there are infitnitely many equilibrium.
+
+
+One. From market clear, $s^t_t(1+r_{t+1}) + s^{t+1}_{t+1}=0$, only $r_{t+1}$ lead to stationary equilibrium.
 
 \section{} %3
 
