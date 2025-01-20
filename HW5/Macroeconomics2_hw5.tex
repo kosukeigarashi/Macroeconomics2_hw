@@ -111,6 +111,31 @@ Define the excess demand functions:
   y(p_t, p_{t+1}) = c_t^t(p_t, p_{t+1}) = \omega_1\\
   z(p_t, p_{t+1}) = c_{t+1}^t(p_t, p_{t+1}) = \omega_2\\
 \end{align*}
+Since $c_t^t(p_t, p_{t+1} \geq 0)$ and $c_{t+1}^t(p_t, p_{t+1}) \geq 0$,\\
+$y(p_t, p_{t+1}) \geq - \omega_1$ and $z(p_t, p_{t+1}) \geq -\omega_2$ holds.\\
+Since the optimal choice satisfies the budget constraint\\
+\begin{align*}
+  p_t y(p_t, p_{t+1}) + p_{t+1} z(p_t, p_{t+1}) = 0
+\end{align*}
+So we have 
+\begin{align*}
+  \frac{z(p_t, p_{t+1})}{y(p_t, p_{t+1})} = - \frac{p_t}{p_{t+1}}
+\end{align*}
+Now, $U(c_t) = \frac{(c_t)^{1 - \gamma}}{1 - \gamma}$ $(\gamma \neq 1)$ is CRRA utility function, so the equilibrium is unique.
+
+\subsection*{(d)}
+Now, $U(c_t) = \log c_t$.\\
+In the PAYG social security system, $b = \tau (1 + n)$ holds.\\
+The FOCs imply $p_t c_t^t = p_{t+1} c_{t+1}^t$.\\
+Then, the AD competitive equilibrium is an allocation
+\begin{align*}
+  c_1^0 = \log \omega_2\\
+  c_t^t(p_t, p_{t+1}) = \frac{1}{2} \[ \omega_1 - \tau + n(\omega_2 + \tau (1 + n)) \]\\
+  c_{t+1}^t(p_t, p_{t+1}) = \frac{1}{2} \[ \frac{\omega_1 - \tau}{n} + \omega_2 + \tau (1 + n) \]
+\end{align*}
+
+\subsection*{(e)}
+
 
 \section{} %2
 
