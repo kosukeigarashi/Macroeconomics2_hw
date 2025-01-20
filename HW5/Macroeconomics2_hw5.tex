@@ -89,7 +89,28 @@ An allocation $c_1^0, \{ c_t^t, c_{t+1}^t \}_{t=1}^\infty$ is feasible Pareto op
 \end{align*}
 
 \subsection*{(b)}
-an Arrow-Debreu compepetive equilibrium is an allocation
+an Arrow-Debreu compepetive equilibrium is an allocation $\hat{c_1^0}, \{ \hat{c_t^t}, \hat{c_{t+1}^t} \}_{t=1}^\infty$ and prices $\{ p_t \}_{t=1}^\infty$ such that\\
+1. Given $\{ p_t \}_{t=1}^\infty$, for each $t \geq 1, (\hat{c_t^t}, \hat{c_{t+1}^t})$ solves\\
+\begin{align*}
+  \max_{(c_t^t, c_{t+1}^t) \geq 0} \frac{(c_t^t)^{1 - \gamma}}{1 - \gamma} + \frac{(c_{t+1}^t)^{1 - \gamma}}{1 - \gamma}\\
+  \text{s.t. } p_t c_t^t + p_{t+1} c_{t+1}^t \leq p_t e_t^t + p_{t+1} e_{t+1}^t\\
+\end{align*}
+2. Given $p_1$, $\hat{C_1^0}$ solves\\
+\begin{align*}
+  \max_{c_1^0 \geq 0} \frac{(c_1^0)^{1 - \gamma}}{1 - \gamma}\\
+  \text{s.t. } p_1 c_1^0 \leq p_1 e_1^0\\
+\end{align*}
+3. For all $t \geq 1$\\
+\begin{align*}
+  c_t^{t-1} + c_t^t = e_t^{t-1} + e_t^t \text{ for all } t \geq 1\\
+\end{align*}
+
+\subsection*{(c)}
+Define the excess demand functions:
+\begin{align*}
+  y(p_t, p_{t+1}) = c_t^t(p_t, p_{t+1}) = \omega_1\\
+  z(p_t, p_{t+1}) = c_{t+1}^t(p_t, p_{t+1}) = \omega_2\\
+\end{align*}
 
 \section{} %2
 
