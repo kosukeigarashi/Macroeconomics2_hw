@@ -1,5 +1,12 @@
+# LaTeX intermediate and output files
 *.aux
 *.log
-*.fdb_latexmk
 *.fls
+*.fdb_latexmk
+*.out
 *.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.pdf
