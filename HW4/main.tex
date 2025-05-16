@@ -1,0 +1,105 @@
+\documentclass[a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{enumerate}
+\usepackage{amssymb}
+\usepackage{physics} 
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{docmute}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{comment}
+\usepackage{tikz}
+\usepackage{fancyvrb}
+\usepackage{bm}
+\usepackage{tcolorbox}
+\usepackage[legacycolonsymbols]{mathtools}
+\usepackage{listings}
+\usepackage{matlab-prettifier}
+\usepackage{booktabs}
+\usepackage{minted}
+\usepackage{enumitem}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\captionsetup{compatibility=false}
+
+\captionsetup[figure]{font=small}
+\captionsetup[table]{justification=centering}
+\captionsetup[figure]{justification=centering}
+
+
+\newcommand{\argmin}{\mathop{\rm argmin}\limits}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\al}{\alpha}
+
+
+%python
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codered}{rgb}{0.6,0,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\title{Public Finance Theory Problem Set 1}
+\date{\today}
+\author{Graduate School of Economics, The University of Tokyo\\[4mm]29--246004 Kosuke IGARASHI}
+
+
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{} %1
+In the 2-good model, 
+\begin{align*}
+    CV &= m^1 - e(p_1^1, v(p_1^0, m^0))\\
+    &= e(p_1^1, v(p_1^1, m^1)) - e(p_1^1, v(p_1^0, m^0))\\
+    &= \int_{p_1^0}^{p_1^1} \frac{\partial e(p_1, u^0)}{\partial p_1} dp_1\\
+    &= \int_{p_1^0}^{p_1^1} h_1(p_1, u^0) dp_1
+\end{align*}
+
+\section{} %2
+Compensating variation can be transformed into
+\begin{align*}
+    e(p_1^2, v(p_1^2, m^2)) - e(p_1^2, v(p_1^0, m^0)) &= m^2 - e(p_1^2, v(p_1^0, m^0))\\
+    &= m^0 + tx_1(p_1^2, m^2) - e(p_1^2, v(p_1^0, m^0))\\
+    &= e(p_1^0, v(p_1^0, m^0)) - e(p_1^2, v(p_1^0, m^0)) + tx_1(p_1^2, m^2)
+\end{align*}
+Then, welfare effect of distortionary tax is defined as the negative of equivalent variation:
+\begin{align*}
+    &e(p_1^2, v(p_1^0, m^0)) - e(p_1^0, v(p_1^0, m^0)) - tx_1(p_1^2, m^2)\\
+    &= \int_{p_1^0}^{p_1^2} h_1(p_1, u^0) dp_1 - tx_1(p_1^2, m^2)
+\end{align*}
+
+\section{} %3
+Now,
+\begin{align*}
+    \epsilon = - \frac{\partial h_1(p_1, u)}{\partial p_1} \frac{p_1^1}{\hat{h_1}}\\
+    \text{where } \hat{h_1} = h_1(p_1^1, u)
+\end{align*}
+The linearized compensated demand function is
+\begin{align*}
+    h_1(p_1, u) &\approx \hat{h_1} + \left. \frac{\partial h_1}{\partial p_1} \right|_{p_1 = p_1^1} (p_1 - p_1^1)\\
+    &= \hat{h_1} - \epsilon \hat{h_1} \frac{p_1 - p_1^1}{p_1^1}\\
+    &= \hat{h_1}\left(1 - \epsilon \frac{p_1 - p_1^1}{p_1^1}\right)
+\end{align*}
+
+\section{} %4
+Hotelling demonstrated the theoretical validity of using the Harberger triangle in welfare analysis even when multiple components of a policy change simultaneously.
+He focused on the problem of path dependence, where the total deadweight loss calculated by summing up the losses from each taxed good individually may vary depending on the order in which prices are assumed to change.
+To resolve this issue, Hotelling showed that if the “integrability conditions” are satisfied, the problem of path dependence does not arise.
+These conditions require symmetry in cross-price derivatives of demand, meaning that the impact of a change in the price of good j on the demand for good i is equal to the impact of a change in the price of good i on the demand for good j.
+When this condition holds, welfare effects from simultaneous price changes are uniquely determined, regardless of the order in which the changes occur.
+Furthermore, Hotelling argued that since income effects in actual demand curves are typically small, the use of Harberger triangles remains practically valid.
+
+
+
+
+\end{document}
